@@ -34,6 +34,15 @@ public class CryptoService {
     public CryptoResponse getCryptoByName(String cryptoId) {
      return coinCapService.getCrypto(cryptoId);
     }
+    public Crypto verificateCrypto(long cryptoId){
+        Crypto cryptoNotVerificated = cryptoRepository.findById(cryptoId).get();
+        if (cryptoNotVerificated != null){
+            Crypto cryptoVerificated = cryptoNotVerificated;
+            return  cryptoVerificated;
+        } else {
+            throw new NullPointerException("Crypto not found");
+        }
+    }
 
     public void createNewCrypto(CryptoRequest cryptoRequest, UUID userId) {
 
@@ -61,6 +70,7 @@ public class CryptoService {
                 break;
             }
         }
+
         // Verificando se ela está listada e executando o método
         if (isCreateOnUserList == true){
             for (Crypto cryptoOnList :userVerificated.getCryptoList() ) {
@@ -86,5 +96,17 @@ public class CryptoService {
         }
 
     }
-    public void deleteCryptoById(UUID idUser, String cryptoId) {}
+    public void deleteCryptoById(UUID idUser, long cryptoId) {
+        Crypto crypto = verificateCrypto(cryptoId);
+        User userNotVerified = userRepository.findById(idUser).get();
+        User userVerificated = userService.verifyUser(userNotVerified);
+        for (Crypto c: userVerificated.getCryptoList()){
+            if (c.getCryptoName().equals(crypto.getCryptoName())) {
+                userVerificated.getCryptoList().remove(c);
+                userRepository.save(userVerificated);
+                break;
+            }
+        }
+        cryptoRepository.delete(crypto);
+    }
 }
