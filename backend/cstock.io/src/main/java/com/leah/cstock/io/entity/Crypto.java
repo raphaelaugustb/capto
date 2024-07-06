@@ -9,18 +9,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
 @Entity
 public class Crypto {
     @Id
-@GeneratedValue(strategy = GenerationType.SEQUENCE)
-private long idStock;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long idStock;
     private String cryptoName;
     private String cryptoPrice;
     private double cryptoAmount;
     private double totalUserCryptoValue;
+    private String symbol;
 
+    public Crypto(long idStock, String cryptoName, String cryptoPrice, double cryptoAmount, double totalUserCryptoValue, String symbol) {
+        this.idStock = idStock;
+        this.cryptoName = cryptoName;
+        this.cryptoPrice = cryptoPrice;
+        this.cryptoAmount = cryptoAmount;
+        this.totalUserCryptoValue = totalUserCryptoValue;
+        this.symbol = symbol;
+    }
+
+    public Crypto() {
+    }
 }
