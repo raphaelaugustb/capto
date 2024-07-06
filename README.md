@@ -1,9 +1,2 @@
-
-![Logo](https://github.com/raphaelaugustb/cstock.io/assets/66183690/93c005b9-7c60-4442-a4f1-1f3883d7863f)
-
-
-
-![image](https://github.com/raphaelaugustb/cstock.io/assets/66183690/225e6d07-91fa-4423-a567-c912cd53de33)
-
-
+![image](https://github.com/raphaelaugustb/cstock.io/assets/66183690/7a493963-d113-4126-a3b3-f672487f8728)
 
