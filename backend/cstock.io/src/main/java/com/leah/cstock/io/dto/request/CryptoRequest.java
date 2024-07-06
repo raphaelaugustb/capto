@@ -12,6 +12,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CryptoRequest {
     private String cryptoName;
-    private String cryptoSymbol;
-    private double doubleCryptoAmount;
+    private double CryptoAmount;
 }
