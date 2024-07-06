@@ -4,17 +4,22 @@ import com.leah.cstock.io.dto.request.UserRequest;
 import com.leah.cstock.io.dto.response.UserResponse;
 import com.leah.cstock.io.entity.User;
 import com.leah.cstock.io.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+
+
 @Service
 public class UserService {
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     public UserRequest verifyUserRequest(UserRequest userRequest) {
         if (userRequest != null){
             return  userRequest;
