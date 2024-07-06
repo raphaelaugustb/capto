@@ -39,15 +39,15 @@ public class CryptoController {
         cryptoService.createNewCrypto(cryptoRequest, userId);
         return  ResponseEntity.ok(cryptoRequest);
     }
-    @PutMapping("{userId}/crypto/{cryptoId}")
-    public ResponseEntity<Double> updateUserCryptoOnWallet(@PathVariable UUID userId, @PathVariable String cryptoId, @RequestBody double cryptoAmount){
-        cryptoService.updateCrypto(userId, cryptoAmount, cryptoId);
+    @PutMapping("{userId}/crypto")
+    public ResponseEntity<Double> updateUserCryptoOnWallet(@PathVariable UUID userId, @RequestParam(name = "name") String cryptoName, @RequestBody double cryptoAmount){
+        cryptoService.updateCrypto(userId, cryptoAmount, cryptoName);
         return ResponseEntity.ok(cryptoAmount);
     }
-    @DeleteMapping("{userId}/crypto/{cryptoId}")
-    public ResponseEntity<String> deleteUserCryptoOnWallet(@PathVariable UUID userId, @PathVariable long cryptoId){
-        cryptoService.deleteCryptoById(userId, cryptoId);
-        return ResponseEntity.ok("Deleted user crypto:" + cryptoId);
+    @DeleteMapping("{userId}/crypto")
+    public ResponseEntity<String> deleteUserCryptoOnWallet(@PathVariable UUID userId, @RequestParam(name = "name") String cryptoName){
+        cryptoService.deleteCryptoById(userId, cryptoName);
+        return ResponseEntity.ok("Deleted user crypto:" + cryptoName);
     }
 
 }

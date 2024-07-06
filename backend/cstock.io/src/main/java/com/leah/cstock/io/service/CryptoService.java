@@ -95,18 +95,21 @@ public class CryptoService {
         }
 
     }
-    public void deleteCryptoById(UUID idUser, long cryptoId) {
-        Crypto crypto = verificateCrypto(cryptoId);
+    public void deleteCryptoById(UUID idUser, String cryptoName) {
+        long cryptoId = 0;
+        String formatedCryptoName = String.valueOf(cryptoName.charAt(0)).toUpperCase() + cryptoName.substring(1);
         User userNotVerified = userRepository.findById(idUser).get();
         User userVerificated = userService.verifyUser(userNotVerified);
         for (Crypto c: userVerificated.getCryptoList()){
-            if (c.getCryptoName().equals(crypto.getCryptoName())) {
+            if (c.getCryptoName().equals(formatedCryptoName)){
+                cryptoId = c.getIdCrypto();
                 userVerificated.getCryptoList().remove(c);
                 userRepository.save(userVerificated);
                 break;
             }
         }
-        cryptoRepository.delete(crypto);
+        Crypto cryptoDelete = verificateCrypto(cryptoId);
+        cryptoRepository.delete(cryptoDelete);
     }
     public void updateCrypto(UUID idUser, Double cryptoAmount, String cryptoName) {
         long cryptoId = 0;
