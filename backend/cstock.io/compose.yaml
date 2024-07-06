@@ -1,0 +1,12 @@
+services:
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=cstock.io'
+      - 'MYSQL_PASSWORD=12345'
+      - 'MYSQL_ROOT_PASSWORD=123456'
+      - 'MYSQL_USER=admin'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
