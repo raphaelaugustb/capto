@@ -1,0 +1,8 @@
+package com.leah.cstock.io.repository;
+
+import com.leah.cstock.io.entity.Crypto;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CryptoRepository extends JpaRepository<Crypto, Long> {
+
+}
