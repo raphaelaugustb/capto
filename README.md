@@ -1,1 +1,1 @@
-![image](https://github.com/raphaelaugustb/cstock.io/assets/66183690/042f250d-b9ee-4394-aea4-10c090cd484e)
+![image](https://github.com/raphaelaugustb/cstock.io/assets/66183690/ce1d7068-6311-49c1-b711-ae0e3eca4f94)
