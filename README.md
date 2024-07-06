@@ -1,4 +1,5 @@
-![Logo](https://github.com/raphaelaugustb/cstock.io/assets/66183690/b610a57e-492d-4980-adfa-0a32ce8e1418)
+![Logo](https://github.com/raphaelaugustb/cstock.io/assets/66183690/93c005b9-7c60-4442-a4f1-1f3883d7863f)
+
 
 
 
