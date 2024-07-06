@@ -4,9 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
@@ -15,7 +13,7 @@ import lombok.Setter;
 public class Crypto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long idStock;
+    private long idCrypto;
     private String cryptoName;
     private String cryptoPrice;
     private double cryptoAmount;
@@ -23,7 +21,7 @@ public class Crypto {
     private String symbol;
 
     public Crypto(long idStock, String cryptoName, String cryptoPrice, double cryptoAmount, double totalUserCryptoValue, String symbol) {
-        this.idStock = idStock;
+        this.idCrypto = idStock;
         this.cryptoName = cryptoName;
         this.cryptoPrice = cryptoPrice;
         this.cryptoAmount = cryptoAmount;

@@ -132,11 +132,12 @@ public class CryptoService {
         return  userVerificated.getCryptoList();
     }
     public Crypto getUserCryptoByName(UUID idUser, String cryptoName) {
+        String formatedCryptoName = String.valueOf(cryptoName.charAt(0)).toUpperCase() + cryptoName.substring(1);
         User userNotVerified = userRepository.findById(idUser).get();
         User userVerificated = userService.verifyUser(userNotVerified);
         Crypto userCrypto = null;
         for(Crypto c: userVerificated.getCryptoList()){
-            if (c.getCryptoName().equals(cryptoName)) {
+            if (c.getCryptoName().equals(formatedCryptoName)) {
                 userCrypto = c;
                 break;
             } else {
