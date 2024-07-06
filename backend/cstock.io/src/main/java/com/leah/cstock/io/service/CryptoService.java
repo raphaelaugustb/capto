@@ -126,4 +126,23 @@ public class CryptoService {
         crypto.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, crypto.getCryptoPrice()));
         cryptoRepository.save(crypto);
     }
+    public List<Crypto> getUserCryptoList(UUID idUser){
+        User userNotVerified = userRepository.findById(idUser).get();
+        User userVerificated = userService.verifyUser(userNotVerified);
+        return  userVerificated.getCryptoList();
+    }
+    public Crypto getUserCryptoByName(UUID idUser, String cryptoName) {
+        User userNotVerified = userRepository.findById(idUser).get();
+        User userVerificated = userService.verifyUser(userNotVerified);
+        Crypto userCrypto = null;
+        for(Crypto c: userVerificated.getCryptoList()){
+            if (c.getCryptoName().equals(cryptoName)) {
+                userCrypto = c;
+                break;
+            } else {
+                throw new NullPointerException("Crypto not found");
+            }
+        }
+        return userCrypto;
+    }
 }
