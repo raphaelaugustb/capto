@@ -109,20 +109,21 @@ public class CryptoService {
         }
         cryptoRepository.delete(crypto);
     }
-    public void updateCrypto(UUID idUser, CryptoRequest cryptoRequest, long cryptoId) {
+    public void updateCrypto(UUID idUser, Double cryptoAmount, long cryptoId) {
         Crypto crypto = verificateCrypto(cryptoId);
         User userNotVerified = userRepository.findById(idUser).get();
         User userVerificated = userService.verifyUser(userNotVerified);
-        crypto.setCryptoAmount(cryptoRequest.getCryptoAmount());
+        crypto.setCryptoAmount(cryptoAmount);
         for (Crypto c: userVerificated.getCryptoList()){
             if (c.getCryptoName().equals(crypto.getCryptoName())) {
-                c.setCryptoAmount(cryptoRequest.getCryptoAmount());
-                c.setTotalUserCryptoValue(userCryptoValue(cryptoRequest.getCryptoAmount(), crypto.getCryptoPrice()));
+                c.setCryptoAmount(cryptoAmount);
+                c.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, crypto.getCryptoPrice()));
+                userVerificated.setUserBalance(userService.updateUserBalance(userVerificated.getCryptoList(), userVerificated.getStockList()));
                 userRepository.save(userVerificated);
                 break;
             }
         }
-        crypto.setTotalUserCryptoValue(userCryptoValue(cryptoRequest.getCryptoAmount(), crypto.getCryptoPrice()));
+        crypto.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, crypto.getCryptoPrice()));
         cryptoRepository.save(crypto);
     }
 }
