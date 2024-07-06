@@ -4,7 +4,6 @@ import com.leah.cstock.io.dto.request.CryptoRequest;
 import com.leah.cstock.io.dto.response.Crypto.CryptoResponse;
 import com.leah.cstock.io.dto.response.Crypto.Data;
 import com.leah.cstock.io.entity.Crypto;
-import com.leah.cstock.io.entity.Stock;
 import com.leah.cstock.io.entity.User;
 import com.leah.cstock.io.repository.CryptoRepository;
 import com.leah.cstock.io.repository.UserRepository;
@@ -109,21 +108,27 @@ public class CryptoService {
         }
         cryptoRepository.delete(crypto);
     }
-    public void updateCrypto(UUID idUser, Double cryptoAmount, long cryptoId) {
-        Crypto crypto = verificateCrypto(cryptoId);
+    public void updateCrypto(UUID idUser, Double cryptoAmount, String cryptoName) {
+        long cryptoId = 0;
         User userNotVerified = userRepository.findById(idUser).get();
         User userVerificated = userService.verifyUser(userNotVerified);
-        crypto.setCryptoAmount(cryptoAmount);
+        String actualCryptoPrice = coinCapService.getCrypto(cryptoName).data().priceUsd();
+        String formatedCryptoName = String.valueOf(cryptoName.charAt(0)).toUpperCase() + cryptoName.substring(1);
         for (Crypto c: userVerificated.getCryptoList()){
-            if (c.getCryptoName().equals(crypto.getCryptoName())) {
+            if (c.getCryptoName().equals(formatedCryptoName)){
+                cryptoId = c.getIdCrypto();
                 c.setCryptoAmount(cryptoAmount);
-                c.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, crypto.getCryptoPrice()));
+                c.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, actualCryptoPrice));
                 userVerificated.setUserBalance(userService.updateUserBalance(userVerificated.getCryptoList(), userVerificated.getStockList()));
                 userRepository.save(userVerificated);
                 break;
             }
         }
-        crypto.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, crypto.getCryptoPrice()));
+        Crypto crypto = verificateCrypto(cryptoId);
+
+        crypto.setCryptoAmount(cryptoAmount);
+
+        crypto.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, actualCryptoPrice));
         cryptoRepository.save(crypto);
     }
     public List<Crypto> getUserCryptoList(UUID idUser){

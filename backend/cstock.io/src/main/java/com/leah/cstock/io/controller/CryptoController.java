@@ -40,7 +40,7 @@ public class CryptoController {
         return  ResponseEntity.ok(cryptoRequest);
     }
     @PutMapping("{userId}/crypto/{cryptoId}")
-    public ResponseEntity<Double> updateUserCryptoOnWallet(@PathVariable UUID userId, @PathVariable long cryptoId, @RequestBody double cryptoAmount){
+    public ResponseEntity<Double> updateUserCryptoOnWallet(@PathVariable UUID userId, @PathVariable String cryptoId, @RequestBody double cryptoAmount){
         cryptoService.updateCrypto(userId, cryptoAmount, cryptoId);
         return ResponseEntity.ok(cryptoAmount);
     }

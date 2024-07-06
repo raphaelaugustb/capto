@@ -16,11 +16,9 @@ import java.util.UUID;
 public class UserController {
 
    private UserService userService;
-    public UserController(UserService userService, CryptoService cryptoService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-
     }
-
 
     @PostMapping("/user/register")
     public ResponseEntity<UserRequest> registerUser(@RequestBody UserRequest userRequest) {
