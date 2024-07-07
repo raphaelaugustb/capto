@@ -1,5 +1,8 @@
 package com.leah.cstock.io.service;
 
+import com.leah.cstock.io.dto.exceptions.user.InvalidUserRequest;
+import com.leah.cstock.io.dto.exceptions.user.UserAlreadyExistException;
+import com.leah.cstock.io.dto.exceptions.user.UserNotFoundException;
 import com.leah.cstock.io.dto.request.UserRequest;
 import com.leah.cstock.io.dto.response.UserResponse;
 import com.leah.cstock.io.entity.Crypto;
@@ -40,7 +43,7 @@ public class UserService {
         if (userRequest != null) {
             return userRequest;
         } else {
-            throw new NullPointerException("Campos inválidos");
+            throw new InvalidUserRequest("Invalid fields");
         }
 
     }
@@ -50,7 +53,7 @@ public class UserService {
         if (user != null) {
             return user;
         } else {
-            throw new NullPointerException("User not found");
+            throw new UserNotFoundException("User not found");
         }
 
     }
@@ -68,7 +71,7 @@ public class UserService {
             newUser.setEmail(email);
             userRepository.save(newUser);
         } else {
-            throw new RuntimeException("Username already exists");
+            throw new UserAlreadyExistException("User already exists");
         }
 
     }
