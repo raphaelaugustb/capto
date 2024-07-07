@@ -46,6 +46,7 @@ public class StockService {
         return userVerified.getStockList();
     }
     public Stock getStockOnUserList(UUID userId, String stockName){
+        //Fix bugs to delete next Stock on list
         Stock stockSelected = null;
         User notverifiedUser = userRepository.findById(userId).get();
         User userVerified = userService.verifyUser(notverifiedUser);
@@ -60,6 +61,7 @@ public class StockService {
         return stockSelected;
     }
     public void updateStockOnUserList(UUID userId, StockRequest stockRequest){
+        //Fix bugs to delete next Stock on list
         User notverifiedUser = userRepository.findById(userId).get();
         String stockName = stockRequest.getStockName();
         double stockAmount = stockRequest.getStockAmount();
@@ -81,6 +83,7 @@ public class StockService {
 
     }
     public void deleteUserStock(UUID userId, String stockName){
+        //Fix bugs to delete next Stock on list
         User notverifiedUser = userRepository.findById(userId).get();
         User userVerified = userService.verifyUser(notverifiedUser);
         long stockid = 0;
