@@ -54,31 +54,37 @@ public class StockService {
             if (a.getStockName().equals(stockName)){
                 stockSelected = a;
                 break;
-            } else {
-                throw new NullPointerException("Stock not found");
             }
         }
-        return stockSelected;
+        if (stockSelected != null){
+
+            return stockSelected;
+        } else {
+            throw new NullPointerException("Stock not found");
+        }
     }
     public void updateStockOnUserList(UUID userId, StockRequest stockRequest){
-        //Fix bugs to delete next Stock on list
         User notverifiedUser = userRepository.findById(userId).get();
         String stockName = stockRequest.getStockName();
         double stockAmount = stockRequest.getStockAmount();
         double newRegularMarketPrice = getStock(stockName).results().getFirst().regularMarketPrice();
         User userVerified = userService.verifyUser(notverifiedUser);
+        Stock stockUpdated = null;
         for (Stock a: userVerified.getStockList()){
             if (a.getSymbol().equals(stockName)){
-                a.setStockAmount(stockAmount);
-                a.setStockPrice(String.valueOf(newRegularMarketPrice));
-                a.setTotalUserStockValue(calcStockUserValue(stockAmount, newRegularMarketPrice));
-                userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
-                stockRepository.save(a);
-                userRepository.save(userVerified);
-                break;
-            } else {
-                throw new NullPointerException("Stock not found");
+                stockUpdated = a;
             }
+        }
+        if (stockUpdated != null){
+            stockUpdated.setStockAmount(stockAmount);
+            stockUpdated.setStockPrice(String.valueOf(newRegularMarketPrice));
+            stockUpdated.setTotalUserStockValue(calcStockUserValue(stockAmount, newRegularMarketPrice));
+            userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
+            stockRepository.save(stockUpdated);
+            userRepository.save(userVerified);
+
+        } else {
+            throw new NullPointerException("Stock not found");
         }
 
     }
@@ -86,19 +92,21 @@ public class StockService {
         //Fix bugs to delete next Stock on list
         User notverifiedUser = userRepository.findById(userId).get();
         User userVerified = userService.verifyUser(notverifiedUser);
-        long stockid = 0;
+        Stock stockRemoved = null;
         for (Stock a: userVerified.getStockList()){
             if (a.getStockName().equals(stockName)){
-                stockid = a.getIdStock();
-                userVerified.getStockList().remove(a);
-                userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
-                userRepository.save(userVerified);
-                        break;
-            } else {
-                throw new NullPointerException("Stock not found");
+                stockRemoved = a;
+                break;
             }
         }
-         stockRepository.deleteById(stockid);
+        if (stockRemoved != null) {
+            userVerified.getStockList().remove(stockRemoved);
+            userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
+            userRepository.save(userVerified);
+            stockRepository.deleteById(stockRemoved.getIdStock());
+        } else {
+            throw new NullPointerException("Stock not found");
+        }
     }
     public void createNewStockUser(StockRequest stockRequest, UUID userId) {
         User notverifiedUser = userRepository.findById(userId).get();

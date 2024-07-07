@@ -83,6 +83,7 @@ public class CryptoService {
                     //Atualizando a criptomoeda no banco e atualizando o usuário
                     cryptoRepository.save(cryptoOnList);
                     userRepository.save(userVerificated);
+                    break;
                 }
             }
         } else {
@@ -104,6 +105,7 @@ public class CryptoService {
             if (c.getCryptoName().equals(formatedCryptoName)){
                 cryptoId = c.getIdCrypto();
                 userVerificated.getCryptoList().remove(c);
+                userVerificated.setUserBalance(userService.updateUserBalance(userVerificated.getCryptoList(), userVerificated.getStockList()));
                 userRepository.save(userVerificated);
                 break;
             }
@@ -148,8 +150,6 @@ public class CryptoService {
             if (c.getCryptoName().equals(formatedCryptoName)) {
                 userCrypto = c;
                 break;
-            } else {
-                throw new NullPointerException("Crypto not found");
             }
         }
         return userCrypto;
