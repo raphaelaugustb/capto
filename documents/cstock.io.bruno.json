@@ -8,10 +8,34 @@
       "items": [
         {
           "type": "http",
+          "name": "addUserCryptoOnWallet",
+          "seq": 4,
+          "request": {
+            "url": "http://localhost:8080/{userId}/crypto",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{ \n  \"cryptoName\": \"solana\",\n  \"cryptoAmount\": 3\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
           "name": "deleteUserCrypto",
           "seq": 1,
           "request": {
-            "url": "http://localhost:8080/1c8ac823-4abf-4b0e-af96-767807a5fc04/crypto?name=Solana",
+            "url": "http://localhost:8080/{userId}/crypto?name=Solana",
             "method": "DELETE",
             "headers": [],
             "params": [
@@ -41,13 +65,13 @@
           "name": "getCryptoByname",
           "seq": 2,
           "request": {
-            "url": "http://localhost:8080/crypto?name=solana",
+            "url": "http://localhost:8080/crypto?name={cryptoNameOnLowerCase}",
             "method": "GET",
             "headers": [],
             "params": [
               {
                 "name": "name",
-                "value": "solana",
+                "value": "{cryptoNameOnLowerCase}",
                 "type": "query",
                 "enabled": true
               }
@@ -71,7 +95,7 @@
           "name": "getUserCryptoList",
           "seq": 3,
           "request": {
-            "url": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/crypto/list",
+            "url": "http://localhost:8080/{userId}/crypto/list",
             "method": "GET",
             "headers": [],
             "params": [],
@@ -91,40 +115,16 @@
         },
         {
           "type": "http",
-          "name": "addUserCryptoOnWallet",
-          "seq": 4,
-          "request": {
-            "url": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/crypto",
-            "method": "POST",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{ \n  \"cryptoName\": \"solana\",\n  \"cryptoAmount\": 3\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "none"
-            }
-          }
-        },
-        {
-          "type": "http",
           "name": "getUserCryptoOnWallet",
           "seq": 5,
           "request": {
-            "url": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/crypto?name=Solana",
+            "url": "http://localhost:8080/{userId}/crypto?name={cryptoName}",
             "method": "GET",
             "headers": [],
             "params": [
               {
                 "name": "name",
-                "value": "Solana",
+                "value": "{cryptoName}",
                 "type": "query",
                 "enabled": true
               }
@@ -148,13 +148,13 @@
           "name": "updateUserCryptoOnWallet",
           "seq": 6,
           "request": {
-            "url": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/crypto?name=solana",
+            "url": "http://localhost:8080/{userId}/crypto?name={onLowerCase}",
             "method": "PUT",
             "headers": [],
             "params": [
               {
                 "name": "name",
-                "value": "solana",
+                "value": "{onLowerCase}",
                 "type": "query",
                 "enabled": true
               }
@@ -185,7 +185,7 @@
           "name": "CreateNewUserStockOnWallet",
           "seq": 1,
           "request": {
-            "url": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/stock",
+            "url": "http://localhost:8080/{userId}/stock",
             "method": "POST",
             "headers": [],
             "params": [],
@@ -209,7 +209,7 @@
           "name": "DeleteStockOnUserWallet",
           "seq": 2,
           "request": {
-            "url": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/stock?name=VALE3",
+            "url": "http://localhost:8080/{userId}/stock?name=VALE3",
             "method": "DELETE",
             "headers": [],
             "params": [
@@ -239,13 +239,13 @@
           "name": "GetStockById",
           "seq": 4,
           "request": {
-            "url": "http://localhost:8080/stock?name=PETR4",
+            "url": "http://localhost:8080/stock?name={stockName}",
             "method": "GET",
             "headers": [],
             "params": [
               {
                 "name": "name",
-                "value": "PETR4",
+                "value": "{stockName}",
                 "type": "query",
                 "enabled": true
               }
@@ -269,7 +269,7 @@
           "name": "GetUserStockList",
           "seq": 5,
           "request": {
-            "url": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/stock/list",
+            "url": "http://localhost:8080/{userId}/stock/list",
             "method": "GET",
             "headers": [],
             "params": [],
@@ -289,65 +289,10 @@
         },
         {
           "type": "http",
-          "name": "TestBrapiService",
-          "seq": 2,
-          "request": {
-            "url": "https://brapi.dev/api/quote/VALE3?token=2U8gKfDMn6uaquVGTNYBwd",
-            "method": "GET",
-            "headers": [],
-            "params": [
-              {
-                "name": "token",
-                "value": "2U8gKfDMn6uaquVGTNYBwd",
-                "type": "query",
-                "enabled": true
-              }
-            ],
-            "body": {
-              "mode": "json",
-              "json": "",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "none"
-            }
-          }
-        },
-        {
-          "type": "http",
-          "name": "updateUserStockOnWallet",
-          "seq": 7,
-          "request": {
-            "url": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/stock",
-            "method": "PUT",
-            "headers": [],
-            "params": [],
-            "body": {
-              "mode": "json",
-              "json": "{\n    \"stockName\": \"MGLU3\",\n    \"stockAmount\": 6\n}",
-              "formUrlEncoded": [],
-              "multipartForm": []
-            },
-            "script": {},
-            "vars": {},
-            "assertions": [],
-            "tests": "",
-            "auth": {
-              "mode": "none"
-            }
-          }
-        },
-        {
-          "type": "http",
           "name": "getOneUserStockByName",
           "seq": 6,
           "request": {
-            "url": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/stock?name=PETR4",
+            "url": "http://localhost:8080/{userId}/stock?name=PETR4",
             "method": "GET",
             "headers": [],
             "params": [
@@ -371,25 +316,19 @@
               "mode": "none"
             }
           }
-        }
-      ]
-    },
-    {
-      "type": "folder",
-      "name": "UserService",
-      "items": [
+        },
         {
           "type": "http",
-          "name": "newUser",
-          "seq": 1,
+          "name": "updateUserStockOnWallet",
+          "seq": 7,
           "request": {
-            "url": "http://localhost:8080/user/register",
-            "method": "POST",
+            "url": "http://localhost:8080/{userId}/stock",
+            "method": "PUT",
             "headers": [],
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n    \"username\": \"raphael\",\n    \"password\":\"raphael123\",\n    \"email\": \"devtravassosraphael12@gmail.com\"\n}",
+              "json": "{\n    \"stockName\": \"MGLU3\",\n    \"stockAmount\": 6\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -401,19 +340,24 @@
               "mode": "none"
             }
           }
-        },
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "UserService",
+      "items": [
         {
           "type": "http",
-          "name": "updateUser",
-          "seq": 2,
+          "name": "deleteUser",
+          "seq": 4,
           "request": {
             "url": "http://localhost:8080/{userId}/user",
-            "method": "PUT",
+            "method": "DELETE",
             "headers": [],
             "params": [],
             "body": {
-              "mode": "json",
-              "json": "    {\n    \"username\": \"raphael augusto\",\n    \"password\":\"Augusto1234\",\n    \"email\": \"devtravassosraphael12@gmail.com\"\n}",
+              "mode": "none",
               "formUrlEncoded": [],
               "multipartForm": []
             },
@@ -451,15 +395,40 @@
         },
         {
           "type": "http",
-          "name": "deleteUser",
-          "seq": 4,
+          "name": "newUser",
+          "seq": 1,
           "request": {
-            "url": "http://localhost:8080/{userId}/user",
-            "method": "DELETE",
+            "url": "http://localhost:8080/user/register",
+            "method": "POST",
             "headers": [],
             "params": [],
             "body": {
-              "mode": "none",
+              "mode": "json",
+              "json": "{\n    \"username\": \"raphael\",\n    \"password\":\"raphael123\",\n    \"email\": \"devtravassosraphael12@gmail.com\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "updateUser",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/{userId}/user",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "    {\n    \"username\": \"raphael augusto\",\n    \"password\":\"Augusto1234\",\n    \"email\": \"devtravassosraphael12@gmail.com\"\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
