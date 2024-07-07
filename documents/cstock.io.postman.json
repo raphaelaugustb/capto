@@ -1,0 +1,420 @@
+{
+  "info": {
+    "name": "cstock.io",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "bruno",
+      "event": []
+    },
+    {
+      "name": "CryptoService",
+      "item": [
+        {
+          "name": "deleteUserCrypto",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/1c8ac823-4abf-4b0e-af96-767807a5fc04/crypto?name=Solana",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Solana"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "getCryptoByname",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/crypto?name=solana",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "solana"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "getUserCryptoList",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/crypto/list",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "addUserCryptoOnWallet",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/crypto",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n  \"cryptoName\": \"solana\",\n  \"cryptoAmount\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getUserCryptoOnWallet",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/crypto?name=Solana",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Solana"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "updateUserCryptoOnWallet",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/crypto?name=solana",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "solana"
+                }
+              ],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "2",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "StockService",
+      "item": [
+        {
+          "name": "CreateNewUserStockOnWallet",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/stock",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"stockName\": \"VALE3\",\n    \"stockAmount\": 4\n\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "DeleteStockOnUserWallet",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/stock?name=VALE3",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "VALE3"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "GetStockById",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/stock?name=PETR4",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "PETR4"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "GetUserStockList",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/stock/list",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "TestBrapiService",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://brapi.dev/api/quote/VALE3?token=2U8gKfDMn6uaquVGTNYBwd",
+              "host": [
+                "brapi",
+                "dev"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "2U8gKfDMn6uaquVGTNYBwd"
+                }
+              ],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "updateUserStockOnWallet",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/stock",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"stockName\": \"MGLU3\",\n    \"stockAmount\": 6\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getOneUserStockByName",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/40a00e54-10c0-4f20-b1c3-c85795f78830/stock?name=PETR4",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "PETR4"
+                }
+              ],
+              "variable": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "UserService",
+      "item": [
+        {
+          "name": "newUser",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/user/register",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"raphael\",\n    \"password\":\"raphael123\",\n    \"email\": \"devtravassosraphael12@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "updateUser",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/{userId}/user",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "    {\n    \"username\": \"raphael augusto\",\n    \"password\":\"Augusto1234\",\n    \"email\": \"devtravassosraphael12@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "getUser",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/{userId}/user",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "deleteUser",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/{userId}/user",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": []
+}
