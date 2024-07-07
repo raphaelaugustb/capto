@@ -12,59 +12,68 @@ import java.util.List;
 import java.util.UUID;
 
 
-
 @Service
 public class UserService {
-    private  final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     public double updateUserBalance(List<Crypto> cryptoList, List<Stock> stockList) {
         double userBalance;
         double cryptoBalance = 0;
         double stockBalance = 0;
-             for (Crypto crypto : cryptoList){
-                 cryptoBalance += crypto.getTotalUserCryptoValue();
+        for (Crypto crypto : cryptoList) {
+            cryptoBalance += crypto.getTotalUserCryptoValue();
 
-            }
-             for (Stock stock: stockList){
-                stockBalance += stock.getTotalUserStockValue();
-            }
+        }
+        for (Stock stock : stockList) {
+            stockBalance += stock.getTotalUserStockValue();
+        }
 
         userBalance = cryptoBalance + stockBalance;
         return userBalance;
     }
+
     public UserRequest verifyUserRequest(UserRequest userRequest) {
-        if (userRequest != null){
-            return  userRequest;
+        if (userRequest != null) {
+            return userRequest;
         } else {
-            throw  new NullPointerException("Campos inválidos");
+            throw new NullPointerException("Campos inválidos");
         }
 
     }
+
     public User verifyUser(UUID userId) {
         User user = userRepository.findById(userId).get();
-        if (user != null){
-            return  user;
+        if (user != null) {
+            return user;
         } else {
-            throw  new NullPointerException("User not found");
+            throw new NullPointerException("User not found");
         }
 
     }
+
     public void createNewUser(UserRequest userRequest) {
         UserRequest requestVerificated = verifyUserRequest(userRequest);
         String username = requestVerificated.getUsername();
         String password = requestVerificated.getPassword();
         String email = requestVerificated.getEmail();
-        User newUser= new User();
-        newUser.setUsername(username);
-        newUser.setPassword(password);
-        newUser.setEmail(email);
-        userRepository.save(newUser);
+        User verifyUserExist = userRepository.findByEmail(email);
+        if (verifyUserExist == null) {
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setPassword(password);
+            newUser.setEmail(email);
+            userRepository.save(newUser);
+        } else {
+            throw new RuntimeException("Username already exists");
+        }
+
     }
 
-    public UserResponse getUserInfo(UUID userId){
+    public UserResponse getUserInfo(UUID userId) {
         User userVerified = verifyUser(userId);
         return new UserResponse(userVerified.getUsername(), userVerified.getPassword(), userVerified.getEmail(), userVerified.getUserBalance());
     }
@@ -81,10 +90,11 @@ public class UserService {
         vericatedUser.setPassword(
                 password
         );
-        vericatedUser.setUsername( username);
+        vericatedUser.setUsername(username);
         userRepository.save(vericatedUser);
     }
-    public  void deleteUserById(UUID userId) {
+
+    public void deleteUserById(UUID userId) {
         User userVerified = verifyUser(userId);
         userRepository.delete(userVerified);
     }
