@@ -1,5 +1,6 @@
 package com.leah.cstock.io.service;
 
+import com.leah.cstock.io.dto.exceptions.crypto.CryptoNotFoundException;
 import com.leah.cstock.io.dto.request.CryptoRequest;
 import com.leah.cstock.io.dto.response.Crypto.CryptoResponse;
 import com.leah.cstock.io.dto.response.Crypto.Data;
@@ -15,10 +16,10 @@ import java.util.UUID;
 @Service
 public class CryptoService {
 
-  private final UserRepository  userRepository;
-  private final CryptoRepository cryptoRepository;
-  private final UserService userService;
-  private final CoinCapService coinCapService;
+    private final UserRepository userRepository;
+    private final CryptoRepository cryptoRepository;
+    private final UserService userService;
+    private final CoinCapService coinCapService;
 
     public CryptoService(CoinCapService coinCapService, UserService userService, CryptoRepository cryptoRepository, UserRepository userRepository) {
         this.coinCapService = coinCapService;
@@ -26,18 +27,21 @@ public class CryptoService {
         this.cryptoRepository = cryptoRepository;
         this.userRepository = userRepository;
     }
-    public double userCryptoValue(double cryptoAmount, String priceUsd){
+
+    public double userCryptoValue(double cryptoAmount, String priceUsd) {
         return cryptoAmount * Double.parseDouble(priceUsd);
     }
+
     public CryptoResponse getCryptoByName(String cryptoId) {
-     return coinCapService.getCrypto(cryptoId);
+        return coinCapService.getCrypto(cryptoId);
     }
-    public Crypto verificateCrypto(long cryptoId){
+
+    public Crypto verificateCrypto(long cryptoId) {
         Crypto crypto = cryptoRepository.findById(cryptoId).get();
-        if (crypto != null){
-            return  crypto;
+        if (crypto != null) {
+            return crypto;
         } else {
-            throw new NullPointerException("Crypto not found");
+            throw new CryptoNotFoundException("Crypto not found");
         }
     }
 
@@ -48,19 +52,19 @@ public class CryptoService {
         double cryptoAmount = cryptoRequest.getCryptoAmount();
         Data response = coinCapService.getCrypto(cryptoName).data();
         // Pegando nosso usuário da base de dados
-        User userVerified= userService.verifyUser(userId);
+        User userVerified = userService.verifyUser(userId);
 
         // Criando a entity crypto e setando os campos
         Crypto crypto = new Crypto();
         crypto.setCryptoName(response.name());
         crypto.setCryptoAmount(cryptoAmount);
         crypto.setCryptoPrice(response.priceUsd());
-        crypto.setTotalUserCryptoValue(userCryptoValue(cryptoAmount,response.priceUsd()));
+        crypto.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, response.priceUsd()));
         crypto.setSymbol(response.symbol());
 
         //Verificacao para determinar se a criptomeda ja está listada no repo do usuário
         boolean isCreateOnUserList = false;
-        for (Crypto cryptoOnList :userVerified.getCryptoList() ) {
+        for (Crypto cryptoOnList : userVerified.getCryptoList()) {
             if (cryptoOnList.getCryptoName().equals(response.name())) {
                 isCreateOnUserList = true;
                 break;
@@ -68,13 +72,13 @@ public class CryptoService {
         }
 
         // Verificando se ela está listada e executando o método
-        if (isCreateOnUserList){
-            for (Crypto cryptoOnList :userVerified.getCryptoList() ) {
+        if (isCreateOnUserList) {
+            for (Crypto cryptoOnList : userVerified.getCryptoList()) {
                 if (cryptoOnList.getCryptoName().equals(response.name())) {
                     // Atualizando a quantidade que o usuário e tem e o valor total
-                    cryptoOnList.setCryptoAmount( cryptoOnList.getCryptoAmount() + cryptoAmount );
-                   cryptoOnList.setTotalUserCryptoValue( cryptoOnList.getTotalUserCryptoValue() + userCryptoValue(cryptoAmount,response.priceUsd()));
-                   cryptoOnList.setCryptoPrice(response.priceUsd());
+                    cryptoOnList.setCryptoAmount(cryptoOnList.getCryptoAmount() + cryptoAmount);
+                    cryptoOnList.setTotalUserCryptoValue(cryptoOnList.getTotalUserCryptoValue() + userCryptoValue(cryptoAmount, response.priceUsd()));
+                    cryptoOnList.setCryptoPrice(response.priceUsd());
                     //Atualizando o saldo do usuário
                     userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
                     //Atualizando a criptomoeda no banco e atualizando o usuário
@@ -93,12 +97,13 @@ public class CryptoService {
         }
 
     }
+
     public void deleteCryptoById(UUID userId, String cryptoName) {
         long cryptoId = 0;
         String formatedCryptoName = String.valueOf(cryptoName.charAt(0)).toUpperCase() + cryptoName.substring(1);
         User userVerified = userService.verifyUser(userId);
-        for (Crypto c: userVerified.getCryptoList()){
-            if (c.getCryptoName().equals(formatedCryptoName)){
+        for (Crypto c : userVerified.getCryptoList()) {
+            if (c.getCryptoName().equals(formatedCryptoName)) {
                 cryptoId = c.getIdCrypto();
                 userVerified.getCryptoList().remove(c);
                 userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
@@ -109,13 +114,14 @@ public class CryptoService {
         Crypto cryptoDelete = verificateCrypto(cryptoId);
         cryptoRepository.delete(cryptoDelete);
     }
+
     public void updateCrypto(UUID userId, Double cryptoAmount, String cryptoName) {
         long cryptoId = 0;
         User userVerified = userService.verifyUser(userId);
         String actualCryptoPrice = coinCapService.getCrypto(cryptoName).data().priceUsd();
         String formatedCryptoName = String.valueOf(cryptoName.charAt(0)).toUpperCase() + cryptoName.substring(1);
-        for (Crypto c: userVerified.getCryptoList()){
-            if (c.getCryptoName().equals(formatedCryptoName)){
+        for (Crypto c : userVerified.getCryptoList()) {
+            if (c.getCryptoName().equals(formatedCryptoName)) {
                 cryptoId = c.getIdCrypto();
                 c.setCryptoAmount(cryptoAmount);
                 c.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, actualCryptoPrice));
@@ -131,20 +137,26 @@ public class CryptoService {
         crypto.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, actualCryptoPrice));
         cryptoRepository.save(crypto);
     }
-    public List<Crypto> getUserCryptoList(UUID userId){
+
+    public List<Crypto> getUserCryptoList(UUID userId) {
         User userVerified = userService.verifyUser(userId);
-        return  userVerified.getCryptoList();
+        return userVerified.getCryptoList();
     }
+
     public Crypto getUserCryptoByName(UUID userId, String cryptoName) {
         String formatedCryptoName = String.valueOf(cryptoName.charAt(0)).toUpperCase() + cryptoName.substring(1);
         User userVerified = userService.verifyUser(userId);
         Crypto userCrypto = null;
-        for(Crypto c: userVerified.getCryptoList()){
+        for (Crypto c : userVerified.getCryptoList()) {
             if (c.getCryptoName().equals(formatedCryptoName)) {
                 userCrypto = c;
                 break;
             }
         }
-        return userCrypto;
+        if (userCrypto == null) {
+            throw new CryptoNotFoundException("crypto not found");
+        } else {
+            return userCrypto;
+        }
     }
 }
