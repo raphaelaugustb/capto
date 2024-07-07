@@ -49,7 +49,7 @@ public class StockService {
         Stock stockSelected = null;
         User userVerified = userService.verifyUser(userId);
         for (Stock a: userVerified.getStockList()){
-            if (a.getStockName().equals(stockName)){
+            if (a.getStockSymbol().equals(stockName)){
                 stockSelected = a;
                 break;
             }
@@ -68,7 +68,7 @@ public class StockService {
         User userVerified = userService.verifyUser(userId);
         Stock stockUpdated = null;
         for (Stock a: userVerified.getStockList()){
-            if (a.getSymbol().equals(stockName)){
+            if (a.getStockSymbol().equals(stockName)){
                 stockUpdated = a;
             }
         }
@@ -89,7 +89,7 @@ public class StockService {
         User userVerified = userService.verifyUser(userId);
         Stock stockRemoved = null;
         for (Stock a: userVerified.getStockList()){
-            if (a.getStockName().equals(stockName)){
+            if (a.getStockSymbol().equals(stockName)){
                 stockRemoved = a;
                 break;
             }
@@ -111,25 +111,25 @@ public class StockService {
         Results response = brapiService.getStockById(stockName, TOKEN).results().getFirst();
         Stock newStock = new Stock();
         newStock.setStockAmount(stockAmount);
-        newStock.setStockName(stockName);
-        newStock.setSymbol(response.symbol());
+        newStock.setStockName(response.longName());
+        newStock.setStockSymbol(response.symbol());
         newStock.setStockPrice(String.valueOf(response.regularMarketPrice()));
         newStock.setTotalUserStockValue(calcStockUserValue(stockAmount, response.regularMarketPrice()));
-        for (Stock c : userVerified.getStockList()) {
-            if (c.getStockName().equals(stockRequest.getStockName())) {
+        for (Stock a : userVerified.getStockList()) {
+            if (a.getStockSymbol().equals(stockRequest.getStockName())) {
                 stockIsOnUserList = true;
                 break;
             }
         }
 
         if (stockIsOnUserList){
-            for (Stock c : userVerified.getStockList()) {
-                if (c.getStockName().equals(stockRequest.getStockName())) {
-                    c.setStockAmount(stockAmount);
-                    c.setStockPrice(String.valueOf(response.regularMarketPrice()));
-                    c.setTotalUserStockValue(calcStockUserValue(stockAmount, response.regularMarketPrice()));
+            for (Stock a : userVerified.getStockList()) {
+                if (a.getStockSymbol().equals(stockRequest.getStockName())) {
+                    a.setStockAmount(stockAmount);
+                    a.setStockPrice(String.valueOf(response.regularMarketPrice()));
+                    a.setTotalUserStockValue(calcStockUserValue(stockAmount, response.regularMarketPrice()));
                     userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
-                    stockRepository.save(c);
+                    stockRepository.save(a);
                     userRepository.save(userVerified);
                     break;
                 }
