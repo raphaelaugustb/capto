@@ -1,4 +1,4 @@
-package com.leah.cstock.io.dto.exceptions.crypto;
+package com.leah.cstock.io.exceptions.crypto;
 
 public class CryptoNotFoundException extends RuntimeException {
     public CryptoNotFoundException(String message) {

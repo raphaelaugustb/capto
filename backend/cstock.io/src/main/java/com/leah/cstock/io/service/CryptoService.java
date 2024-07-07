@@ -1,11 +1,11 @@
 package com.leah.cstock.io.service;
 
-import com.leah.cstock.io.dto.exceptions.crypto.CryptoNotFoundException;
 import com.leah.cstock.io.dto.request.CryptoRequest;
 import com.leah.cstock.io.dto.response.Crypto.CryptoResponse;
 import com.leah.cstock.io.dto.response.Crypto.Data;
 import com.leah.cstock.io.entity.Crypto;
 import com.leah.cstock.io.entity.User;
+import com.leah.cstock.io.exceptions.crypto.CryptoNotFoundException;
 import com.leah.cstock.io.repository.CryptoRepository;
 import com.leah.cstock.io.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -48,8 +48,8 @@ public class CryptoService {
     public void createNewCrypto(CryptoRequest cryptoRequest, UUID userId) {
 
         // Pegando as informaçoes da nossa request e da api externa
-        String cryptoName = cryptoRequest.getCryptoName().toLowerCase();
-        double cryptoAmount = cryptoRequest.getCryptoAmount();
+        String cryptoName = cryptoRequest.cryptoName().toLowerCase();
+        double cryptoAmount = cryptoRequest.cryptoAmount();
         Data response = coinCapService.getCrypto(cryptoName).data();
         // Pegando nosso usuário da base de dados
         User userVerified = userService.verifyUser(userId);
