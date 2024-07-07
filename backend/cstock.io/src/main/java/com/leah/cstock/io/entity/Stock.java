@@ -23,4 +23,5 @@ public class Stock {
     private String stockPrice;
     private double stockAmount;
     private double totalUserStockValue;
+    private String symbol;
 }
