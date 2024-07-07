@@ -1,13 +1,13 @@
 package com.leah.cstock.io.service;
 
-import com.leah.cstock.io.dto.exceptions.user.InvalidUserRequest;
-import com.leah.cstock.io.dto.exceptions.user.UserAlreadyExistException;
-import com.leah.cstock.io.dto.exceptions.user.UserNotFoundException;
 import com.leah.cstock.io.dto.request.UserRequest;
 import com.leah.cstock.io.dto.response.UserResponse;
 import com.leah.cstock.io.entity.Crypto;
 import com.leah.cstock.io.entity.Stock;
 import com.leah.cstock.io.entity.User;
+import com.leah.cstock.io.exceptions.user.InvalidUserRequest;
+import com.leah.cstock.io.exceptions.user.UserAlreadyExistException;
+import com.leah.cstock.io.exceptions.user.UserNotFoundException;
 import com.leah.cstock.io.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -60,9 +60,9 @@ public class UserService {
 
     public void createNewUser(UserRequest userRequest) {
         UserRequest requestVerificated = verifyUserRequest(userRequest);
-        String username = requestVerificated.getUsername();
-        String password = requestVerificated.getPassword();
-        String email = requestVerificated.getEmail();
+        String username = requestVerificated.username();
+        String password = requestVerificated.password();
+        String email = requestVerificated.email();
         User verifyUserExist = userRepository.findByEmail(email);
         if (verifyUserExist == null) {
             User newUser = new User();
@@ -84,9 +84,9 @@ public class UserService {
     public void updateUserInfo(UUID userId, UserRequest userRequest) {
         UserRequest requestVerificated = verifyUserRequest(userRequest);
         User vericatedUser = verifyUser(userId);
-        String username = requestVerificated.getUsername();
-        String password = requestVerificated.getPassword();
-        String email = requestVerificated.getEmail();
+        String username = requestVerificated.username();
+        String password = requestVerificated.password();
+        String email = requestVerificated.email();
         vericatedUser.setEmail(
                 email
         );
