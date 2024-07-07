@@ -26,4 +26,10 @@ public class StockController {
         stockService.createNewStockUser(stockRequest,userId);
         return ResponseEntity.ok(stockRequest);
     }
+
+    @DeleteMapping("{userId}/stock")
+    public  ResponseEntity<String> deleteStockOnUserWallet(@PathVariable UUID userId,  @RequestParam("name") String stockName){
+        stockService.deleteUserStock(userId, stockName);
+        return ResponseEntity.ok("Stock deleted successfully");
+    }
 }

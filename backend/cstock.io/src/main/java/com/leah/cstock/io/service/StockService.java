@@ -10,6 +10,7 @@ import com.leah.cstock.io.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,6 +37,28 @@ public class StockService {
     public double calcStockUserValue(double amount, double regularMarketPrice){
         double userStockValue = amount * regularMarketPrice;
         return userStockValue;
+    }
+    public List<Stock> getUserStockList(UUID userId){
+        User notverifiedUser = userRepository.findById(userId).get();
+        User userVerified = userService.verifyUser(notverifiedUser);
+        return userVerified.getStockList();
+    }
+    public void deleteUserStock(UUID userId, String stockName){
+        User notverifiedUser = userRepository.findById(userId).get();
+        User userVerified = userService.verifyUser(notverifiedUser);
+        long stockid = 0;
+        for (Stock a: userVerified.getStockList()){
+            if (a.getStockName().equals(stockName)){
+                stockid = a.getIdStock();
+                userVerified.getStockList().remove(a);
+                userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
+                userRepository.save(userVerified);
+                        break;
+            } else {
+                throw new NullPointerException("Stock not found");
+            }
+        }
+         stockRepository.deleteById(stockid);
     }
     public void createNewStockUser(StockRequest stockRequest, UUID userId) {
         User notverifiedUser = userRepository.findById(userId).get();
