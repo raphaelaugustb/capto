@@ -21,9 +21,9 @@ public class User {
     private String username;
     private String password;
     private String email;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Crypto> cryptoList;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Stock> stockList;
     private double userBalance;
 
