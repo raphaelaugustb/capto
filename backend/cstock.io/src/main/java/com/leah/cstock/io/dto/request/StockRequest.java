@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockRequest {
-    private String cryptoName;
-    private double CryptoAmount;
+    private String stockName;
+    private double stockAmount;
 }
