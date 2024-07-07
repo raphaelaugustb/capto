@@ -6,8 +6,6 @@ import com.leah.cstock.io.entity.Crypto;
 import com.leah.cstock.io.entity.Stock;
 import com.leah.cstock.io.entity.User;
 import com.leah.cstock.io.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,13 +15,13 @@ import java.util.UUID;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private  final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     public double updateUserBalance(List<Crypto> cryptoList, List<Stock> stockList) {
-        double userBalance = 0;
+        double userBalance;
         double cryptoBalance = 0;
         double stockBalance = 0;
              for (Crypto crypto : cryptoList){
@@ -45,11 +43,12 @@ public class UserService {
         }
 
     }
-    public User verifyUser(User user) {
+    public User verifyUser(UUID userId) {
+        User user = userRepository.findById(userId).get();
         if (user != null){
             return  user;
         } else {
-            throw  new NullPointerException("Campos inválidos");
+            throw  new NullPointerException("User not found");
         }
 
     }
@@ -66,16 +65,13 @@ public class UserService {
     }
 
     public UserResponse getUserInfo(UUID userId){
-        User userNotVerificated = userRepository.findById(userId).get();
-        User vericatedUser = verifyUser(userNotVerificated);
-        UserResponse userResponse = new UserResponse(vericatedUser.getUsername(), vericatedUser.getPassword(), vericatedUser.getEmail(), vericatedUser.getUserBalance());
-        return userResponse;
+        User userVerified = verifyUser(userId);
+        return new UserResponse(userVerified.getUsername(), userVerified.getPassword(), userVerified.getEmail(), userVerified.getUserBalance());
     }
 
     public void updateUserInfo(UUID userId, UserRequest userRequest) {
-        User userNotVerificated = userRepository.findById(userId).get();
         UserRequest requestVerificated = verifyUserRequest(userRequest);
-        User vericatedUser = verifyUser(userNotVerificated);
+        User vericatedUser = verifyUser(userId);
         String username = requestVerificated.getUsername();
         String password = requestVerificated.getPassword();
         String email = requestVerificated.getEmail();
@@ -89,9 +85,8 @@ public class UserService {
         userRepository.save(vericatedUser);
     }
     public  void deleteUserById(UUID userId) {
-        User userNotVerificated = userRepository.findById(userId).get();
-        User vericatedUser = verifyUser(userNotVerificated);
-        userRepository.delete(vericatedUser);
+        User userVerified = verifyUser(userId);
+        userRepository.delete(userVerified);
     }
 
 }

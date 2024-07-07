@@ -15,10 +15,10 @@ import java.util.UUID;
 @Service
 public class CryptoService {
 
-  private UserRepository userRepository;
-  private CryptoRepository cryptoRepository;
-  private UserService userService;
-  private CoinCapService coinCapService;
+  private final UserRepository  userRepository;
+  private final CryptoRepository cryptoRepository;
+  private final UserService userService;
+  private final CoinCapService coinCapService;
 
     public CryptoService(CoinCapService coinCapService, UserService userService, CryptoRepository cryptoRepository, UserRepository userRepository) {
         this.coinCapService = coinCapService;
@@ -27,17 +27,15 @@ public class CryptoService {
         this.userRepository = userRepository;
     }
     public double userCryptoValue(double cryptoAmount, String priceUsd){
-        double userCryptoValuePerAmount = cryptoAmount * Double.parseDouble(priceUsd);
-        return userCryptoValuePerAmount;
+        return cryptoAmount * Double.parseDouble(priceUsd);
     }
     public CryptoResponse getCryptoByName(String cryptoId) {
      return coinCapService.getCrypto(cryptoId);
     }
     public Crypto verificateCrypto(long cryptoId){
-        Crypto cryptoNotVerificated = cryptoRepository.findById(cryptoId).get();
-        if (cryptoNotVerificated != null){
-            Crypto cryptoVerificated = cryptoNotVerificated;
-            return  cryptoVerificated;
+        Crypto crypto = cryptoRepository.findById(cryptoId).get();
+        if (crypto != null){
+            return  crypto;
         } else {
             throw new NullPointerException("Crypto not found");
         }
@@ -50,8 +48,7 @@ public class CryptoService {
         double cryptoAmount = cryptoRequest.getCryptoAmount();
         Data response = coinCapService.getCrypto(cryptoName).data();
         // Pegando nosso usuário da base de dados
-        User userNotVerificated = userRepository.findById(userId).get();
-        User userVerificated= userService.verifyUser(userNotVerificated);
+        User userVerified= userService.verifyUser(userId);
 
         // Criando a entity crypto e setando os campos
         Crypto crypto = new Crypto();
@@ -63,7 +60,7 @@ public class CryptoService {
 
         //Verificacao para determinar se a criptomeda ja está listada no repo do usuário
         boolean isCreateOnUserList = false;
-        for (Crypto cryptoOnList :userVerificated.getCryptoList() ) {
+        for (Crypto cryptoOnList :userVerified.getCryptoList() ) {
             if (cryptoOnList.getCryptoName().equals(response.name())) {
                 isCreateOnUserList = true;
                 break;
@@ -71,61 +68,59 @@ public class CryptoService {
         }
 
         // Verificando se ela está listada e executando o método
-        if (isCreateOnUserList == true){
-            for (Crypto cryptoOnList :userVerificated.getCryptoList() ) {
+        if (isCreateOnUserList){
+            for (Crypto cryptoOnList :userVerified.getCryptoList() ) {
                 if (cryptoOnList.getCryptoName().equals(response.name())) {
                     // Atualizando a quantidade que o usuário e tem e o valor total
                     cryptoOnList.setCryptoAmount( cryptoOnList.getCryptoAmount() + cryptoAmount );
                    cryptoOnList.setTotalUserCryptoValue( cryptoOnList.getTotalUserCryptoValue() + userCryptoValue(cryptoAmount,response.priceUsd()));
                    cryptoOnList.setCryptoPrice(response.priceUsd());
                     //Atualizando o saldo do usuário
-                    userVerificated.setUserBalance(userService.updateUserBalance(userVerificated.getCryptoList(), userVerificated.getStockList()));
+                    userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
                     //Atualizando a criptomoeda no banco e atualizando o usuário
                     cryptoRepository.save(cryptoOnList);
-                    userRepository.save(userVerificated);
+                    userRepository.save(userVerified);
                     break;
                 }
             }
         } else {
             //Adicionando a criptomoeda na lista do usuário e setando seu balanço
-            userVerificated.getCryptoList().add(crypto);
-            userVerificated.setUserBalance(userService.updateUserBalance(userVerificated.getCryptoList(), userVerificated.getStockList()));
+            userVerified.getCryptoList().add(crypto);
+            userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
             //Adicionando a criptomoeda no banco e atualizando o usuário
             cryptoRepository.save(crypto);
-            userRepository.save(userVerificated);
+            userRepository.save(userVerified);
         }
 
     }
-    public void deleteCryptoById(UUID idUser, String cryptoName) {
+    public void deleteCryptoById(UUID userId, String cryptoName) {
         long cryptoId = 0;
         String formatedCryptoName = String.valueOf(cryptoName.charAt(0)).toUpperCase() + cryptoName.substring(1);
-        User userNotVerified = userRepository.findById(idUser).get();
-        User userVerificated = userService.verifyUser(userNotVerified);
-        for (Crypto c: userVerificated.getCryptoList()){
+        User userVerified = userService.verifyUser(userId);
+        for (Crypto c: userVerified.getCryptoList()){
             if (c.getCryptoName().equals(formatedCryptoName)){
                 cryptoId = c.getIdCrypto();
-                userVerificated.getCryptoList().remove(c);
-                userVerificated.setUserBalance(userService.updateUserBalance(userVerificated.getCryptoList(), userVerificated.getStockList()));
-                userRepository.save(userVerificated);
+                userVerified.getCryptoList().remove(c);
+                userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
+                userRepository.save(userVerified);
                 break;
             }
         }
         Crypto cryptoDelete = verificateCrypto(cryptoId);
         cryptoRepository.delete(cryptoDelete);
     }
-    public void updateCrypto(UUID idUser, Double cryptoAmount, String cryptoName) {
+    public void updateCrypto(UUID userId, Double cryptoAmount, String cryptoName) {
         long cryptoId = 0;
-        User userNotVerified = userRepository.findById(idUser).get();
-        User userVerificated = userService.verifyUser(userNotVerified);
+        User userVerified = userService.verifyUser(userId);
         String actualCryptoPrice = coinCapService.getCrypto(cryptoName).data().priceUsd();
         String formatedCryptoName = String.valueOf(cryptoName.charAt(0)).toUpperCase() + cryptoName.substring(1);
-        for (Crypto c: userVerificated.getCryptoList()){
+        for (Crypto c: userVerified.getCryptoList()){
             if (c.getCryptoName().equals(formatedCryptoName)){
                 cryptoId = c.getIdCrypto();
                 c.setCryptoAmount(cryptoAmount);
                 c.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, actualCryptoPrice));
-                userVerificated.setUserBalance(userService.updateUserBalance(userVerificated.getCryptoList(), userVerificated.getStockList()));
-                userRepository.save(userVerificated);
+                userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
+                userRepository.save(userVerified);
                 break;
             }
         }
@@ -136,17 +131,15 @@ public class CryptoService {
         crypto.setTotalUserCryptoValue(userCryptoValue(cryptoAmount, actualCryptoPrice));
         cryptoRepository.save(crypto);
     }
-    public List<Crypto> getUserCryptoList(UUID idUser){
-        User userNotVerified = userRepository.findById(idUser).get();
-        User userVerificated = userService.verifyUser(userNotVerified);
-        return  userVerificated.getCryptoList();
+    public List<Crypto> getUserCryptoList(UUID userId){
+        User userVerified = userService.verifyUser(userId);
+        return  userVerified.getCryptoList();
     }
-    public Crypto getUserCryptoByName(UUID idUser, String cryptoName) {
+    public Crypto getUserCryptoByName(UUID userId, String cryptoName) {
         String formatedCryptoName = String.valueOf(cryptoName.charAt(0)).toUpperCase() + cryptoName.substring(1);
-        User userNotVerified = userRepository.findById(idUser).get();
-        User userVerificated = userService.verifyUser(userNotVerified);
+        User userVerified = userService.verifyUser(userId);
         Crypto userCrypto = null;
-        for(Crypto c: userVerificated.getCryptoList()){
+        for(Crypto c: userVerified.getCryptoList()){
             if (c.getCryptoName().equals(formatedCryptoName)) {
                 userCrypto = c;
                 break;

@@ -41,15 +41,13 @@ public class StockService {
         return userStockValue;
     }
     public List<Stock> getUserStockList(UUID userId){
-        User notverifiedUser = userRepository.findById(userId).get();
-        User userVerified = userService.verifyUser(notverifiedUser);
+        User userVerified = userService.verifyUser(userId);
         return userVerified.getStockList();
     }
     public Stock getStockOnUserList(UUID userId, String stockName){
         //Fix bugs to delete next Stock on list
         Stock stockSelected = null;
-        User notverifiedUser = userRepository.findById(userId).get();
-        User userVerified = userService.verifyUser(notverifiedUser);
+        User userVerified = userService.verifyUser(userId);
         for (Stock a: userVerified.getStockList()){
             if (a.getStockName().equals(stockName)){
                 stockSelected = a;
@@ -64,11 +62,10 @@ public class StockService {
         }
     }
     public void updateStockOnUserList(UUID userId, StockRequest stockRequest){
-        User notverifiedUser = userRepository.findById(userId).get();
         String stockName = stockRequest.getStockName();
         double stockAmount = stockRequest.getStockAmount();
         double newRegularMarketPrice = getStock(stockName).results().getFirst().regularMarketPrice();
-        User userVerified = userService.verifyUser(notverifiedUser);
+        User userVerified = userService.verifyUser(userId);
         Stock stockUpdated = null;
         for (Stock a: userVerified.getStockList()){
             if (a.getSymbol().equals(stockName)){
@@ -89,9 +86,7 @@ public class StockService {
 
     }
     public void deleteUserStock(UUID userId, String stockName){
-        //Fix bugs to delete next Stock on list
-        User notverifiedUser = userRepository.findById(userId).get();
-        User userVerified = userService.verifyUser(notverifiedUser);
+        User userVerified = userService.verifyUser(userId);
         Stock stockRemoved = null;
         for (Stock a: userVerified.getStockList()){
             if (a.getStockName().equals(stockName)){
@@ -109,9 +104,7 @@ public class StockService {
         }
     }
     public void createNewStockUser(StockRequest stockRequest, UUID userId) {
-        User notverifiedUser = userRepository.findById(userId).get();
-
-        User userVerified = userService.verifyUser(notverifiedUser);
+        User userVerified = userService.verifyUser(userId);
         boolean stockIsOnUserList = false;
         String stockName = stockRequest.getStockName();
         Double stockAmount = stockRequest.getStockAmount();
