@@ -43,6 +43,20 @@ public class StockService {
         User userVerified = userService.verifyUser(notverifiedUser);
         return userVerified.getStockList();
     }
+    public Stock getStockOnUserList(UUID userId, String stockName){
+        Stock stockSelected = null;
+        User notverifiedUser = userRepository.findById(userId).get();
+        User userVerified = userService.verifyUser(notverifiedUser);
+        for (Stock a: userVerified.getStockList()){
+            if (a.getStockName().equals(stockName)){
+                stockSelected = a;
+                break;
+            } else {
+                throw new NullPointerException("Stock not found");
+            }
+        }
+        return stockSelected;
+    }
     public void deleteUserStock(UUID userId, String stockName){
         User notverifiedUser = userRepository.findById(userId).get();
         User userVerified = userService.verifyUser(notverifiedUser);

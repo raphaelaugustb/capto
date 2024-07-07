@@ -38,4 +38,8 @@ public class StockController {
     public ResponseEntity<List<Stock>> getUserStockList(@PathVariable UUID userId){
         return ResponseEntity.ok(stockService.getUserStockList(userId));
     }
+    @GetMapping("{userId}/stock")
+    public ResponseEntity<Stock> getUserStockByName(@PathVariable UUID userId,  @RequestParam("name") String stockName){
+        return ResponseEntity.ok(stockService.getStockOnUserList(userId, stockName));
+    }
 }
