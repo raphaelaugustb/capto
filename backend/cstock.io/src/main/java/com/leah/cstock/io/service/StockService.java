@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @Service
 public class StockService {
+    private final CoinCapService coinCapService;
     @Value("#{environment.TOKEN}")
     private String TOKEN;
 
@@ -23,11 +24,12 @@ public class StockService {
     UserRepository userRepository;
     UserService userService;
 
-    public StockService(BrapiService brapiService, StockRepository stockRepository, UserRepository userRepository, UserService userService) {
+    public StockService(BrapiService brapiService, StockRepository stockRepository, UserRepository userRepository, UserService userService, CoinCapService coinCapService) {
         this.brapiService = brapiService;
         this.stockRepository = stockRepository;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.coinCapService = coinCapService;
     }
 
     public StockResponse getStock(String stockSymbol) {
@@ -56,6 +58,27 @@ public class StockService {
             }
         }
         return stockSelected;
+    }
+    public void updateStockOnUserList(UUID userId, StockRequest stockRequest){
+        User notverifiedUser = userRepository.findById(userId).get();
+        String stockName = stockRequest.getStockName();
+        double stockAmount = stockRequest.getStockAmount();
+        double newRegularMarketPrice = getStock(stockName).results().getFirst().regularMarketPrice();
+        User userVerified = userService.verifyUser(notverifiedUser);
+        for (Stock a: userVerified.getStockList()){
+            if (a.getSymbol().equals(stockName)){
+                a.setStockAmount(stockAmount);
+                a.setStockPrice(String.valueOf(newRegularMarketPrice));
+                a.setTotalUserStockValue(calcStockUserValue(stockAmount, newRegularMarketPrice));
+                userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
+                stockRepository.save(a);
+                userRepository.save(userVerified);
+                break;
+            } else {
+                throw new NullPointerException("Stock not found");
+            }
+        }
+
     }
     public void deleteUserStock(UUID userId, String stockName){
         User notverifiedUser = userRepository.findById(userId).get();

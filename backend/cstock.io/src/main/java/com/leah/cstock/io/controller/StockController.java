@@ -42,4 +42,9 @@ public class StockController {
     public ResponseEntity<Stock> getUserStockByName(@PathVariable UUID userId,  @RequestParam("name") String stockName){
         return ResponseEntity.ok(stockService.getStockOnUserList(userId, stockName));
     }
+    @PutMapping("{userId}/stock")
+    public  ResponseEntity<StockRequest> updateStockOnUserWallet(@PathVariable UUID userId, @RequestBody StockRequest stockRequest){
+        stockService.updateStockOnUserList(userId, stockRequest);
+        return ResponseEntity.ok(stockRequest);
+    }
 }
