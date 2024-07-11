@@ -10,7 +10,7 @@ Here you can store and administrate your finances on a simple way. You can test 
 
  Clone project 
 ```bash
-    git clone https://github.com/raphaelaugustb/cstock.io/tree/main/documents
+    git clone https://github.com/raphaelaugustb/cstock.io/
 ```
 Entering on project directory
   ```bash
