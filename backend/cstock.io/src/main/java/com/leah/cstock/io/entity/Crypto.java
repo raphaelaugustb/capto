@@ -4,9 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 @Entity
@@ -19,16 +23,5 @@ public class Crypto {
     private double cryptoAmount;
     private double totalUserCryptoValue;
     private String symbol;
-
-    public Crypto(long idStock, String cryptoName, String cryptoPrice, double cryptoAmount, double totalUserCryptoValue, String symbol) {
-        this.idCrypto = idStock;
-        this.cryptoName = cryptoName;
-        this.cryptoPrice = cryptoPrice;
-        this.cryptoAmount = cryptoAmount;
-        this.totalUserCryptoValue = totalUserCryptoValue;
-        this.symbol = symbol;
-    }
-
-    public Crypto() {
-    }
+    private double userPnlValueCrypto;
 }

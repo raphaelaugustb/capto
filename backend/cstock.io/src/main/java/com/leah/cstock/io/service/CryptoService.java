@@ -20,12 +20,25 @@ public class CryptoService {
     private final CryptoRepository cryptoRepository;
     private final UserService userService;
     private final CoinCapService coinCapService;
+    private static final String  cryptoNotFoundError = "Crypto not found";
 
     public CryptoService(CoinCapService coinCapService, UserService userService, CryptoRepository cryptoRepository, UserRepository userRepository) {
         this.coinCapService = coinCapService;
         this.userService = userService;
         this.cryptoRepository = cryptoRepository;
         this.userRepository = userRepository;
+    }
+    public double updateUserCryptoPnl(User user, String cryptoName){
+        double cryptoPnl = 0;
+        double cryptoApiPrice = Double.parseDouble(coinCapService.getCrypto(cryptoName.toLowerCase()).data().priceUsd());
+            Crypto cryptoFind = user.getCryptoList().stream().filter(crypto -> crypto.getCryptoName().equalsIgnoreCase(cryptoName)).findFirst().orElse(null);
+        if (cryptoFind != null) {
+            double cryptoUserValue = Double.parseDouble(cryptoFind.getCryptoPrice());
+            cryptoPnl = (cryptoApiPrice - cryptoUserValue)/100;
+        } else {
+            throw new CryptoNotFoundException(cryptoNotFoundError);
+        };
+        return cryptoPnl;
     }
 
     public double userCryptoValue(double cryptoAmount, String priceUsd) {
@@ -41,7 +54,7 @@ public class CryptoService {
         if (crypto != null) {
             return crypto;
         } else {
-            throw new CryptoNotFoundException("Crypto not found");
+            throw new CryptoNotFoundException(cryptoNotFoundError);
         }
     }
 
@@ -140,7 +153,10 @@ public class CryptoService {
 
     public List<Crypto> getUserCryptoList(UUID userId) {
         User userVerified = userService.verifyUser(userId);
-        return userVerified.getCryptoList();
+        return userVerified.getCryptoList().stream().map(crypto -> {
+            crypto.setUserPnlValueCrypto(updateUserCryptoPnl(userVerified, crypto.getCryptoName()));
+            return crypto;
+        }).toList();
     }
 
     public Crypto getUserCryptoByName(UUID userId, String cryptoName) {
@@ -153,8 +169,10 @@ public class CryptoService {
                 break;
             }
         }
+
         if (userCrypto == null) {
-            throw new CryptoNotFoundException("crypto not found");
+            userCrypto.setUserPnlValueCrypto(updateUserCryptoPnl(userVerified, cryptoName));
+            throw new CryptoNotFoundException(cryptoNotFoundError);
         } else {
             return userCrypto;
         }

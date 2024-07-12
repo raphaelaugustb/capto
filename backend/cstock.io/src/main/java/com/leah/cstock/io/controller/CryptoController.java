@@ -4,22 +4,18 @@ import com.leah.cstock.io.dto.request.CryptoRequest;
 import com.leah.cstock.io.dto.response.Crypto.CryptoResponse;
 import com.leah.cstock.io.entity.Crypto;
 import com.leah.cstock.io.service.CryptoService;
-import com.leah.cstock.io.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.DataOutput;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 public class CryptoController {
-    private final UserService userService;
-    private CryptoService cryptoService;
+    private final CryptoService cryptoService;
 
-    public CryptoController(CryptoService cryptoService, UserService userService) {
+    public CryptoController(CryptoService cryptoService) {
         this.cryptoService = cryptoService;
-        this.userService = userService;
     }
 
     @GetMapping("/crypto")

@@ -16,35 +16,47 @@ import java.util.UUID;
 
 @Service
 public class StockService {
-    private final CoinCapService coinCapService;
-    BrapiService brapiService;
-    StockRepository stockRepository;
-    UserRepository userRepository;
-    UserService userService;
+
+    private final BrapiService brapiService;
+    private final StockRepository stockRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private static final String stockNotFoundError = "Stock not found";
     @Value("#{environment.TOKEN}")
     private String TOKEN;
 
-    public StockService(BrapiService brapiService, StockRepository stockRepository, UserRepository userRepository, UserService userService, CoinCapService coinCapService) {
+    public StockService(BrapiService brapiService, StockRepository stockRepository, UserRepository userRepository, UserService userService) {
         this.brapiService = brapiService;
         this.stockRepository = stockRepository;
         this.userRepository = userRepository;
         this.userService = userService;
-        this.coinCapService = coinCapService;
     }
-
+    public double updateUserStockPnl(User user, String stockSymbol){
+        double userStockPnl;
+        Stock stockUser = user.getStockList().stream().filter(stock -> stock.getStockSymbol().equalsIgnoreCase(stockSymbol)).findFirst().orElse(null);
+        Results stockService = getStock(stockSymbol).results().stream().findFirst().orElse(null);
+        if(stockUser != null && stockService != null){
+            double userStockValue = Double.parseDouble(stockUser.getStockPrice());
+            userStockPnl = (stockService.regularMarketPrice() - userStockValue)/100;
+        } else {
+            throw new StockNotFoundException(stockNotFoundError);
+        }
+        return userStockPnl;
+    }
     public StockResponse getStock(String stockSymbol) {
-        StockResponse stock = brapiService.getStockById(stockSymbol, TOKEN);
-        return stock;
+        return brapiService.getStockById(stockSymbol, TOKEN);
     }
 
     public double calcStockUserValue(double amount, double regularMarketPrice) {
-        double userStockValue = amount * regularMarketPrice;
-        return userStockValue;
+        return amount * regularMarketPrice;
     }
 
     public List<Stock> getUserStockList(UUID userId) {
         User userVerified = userService.verifyUser(userId);
-        return userVerified.getStockList();
+        return userVerified.getStockList().stream().map(stock -> {
+            stock.setUserPnlValueStock(updateUserStockPnl(userVerified, stock.getStockSymbol()));
+            return stock;
+        }).toList();
     }
 
     public Stock getStockOnUserList(UUID userId, String stockName) {
@@ -58,10 +70,10 @@ public class StockService {
             }
         }
         if (stockSelected != null) {
-
+            stockSelected.setUserPnlValueStock(updateUserStockPnl(userVerified, stockSelected.getStockSymbol()));
             return stockSelected;
         } else {
-            throw new StockNotFoundException("Stock not found");
+            throw new StockNotFoundException(stockNotFoundError);
         }
     }
 
@@ -85,7 +97,7 @@ public class StockService {
             userRepository.save(userVerified);
 
         } else {
-            throw new StockNotFoundException("Stock not found");
+            throw new StockNotFoundException(stockNotFoundError);
         }
 
     }
@@ -105,7 +117,7 @@ public class StockService {
             userRepository.save(userVerified);
             stockRepository.deleteById(stockRemoved.getIdStock());
         } else {
-            throw new StockNotFoundException("Stock not found");
+            throw new StockNotFoundException(stockNotFoundError);
         }
     }
 
@@ -113,7 +125,7 @@ public class StockService {
         User userVerified = userService.verifyUser(userId);
         boolean stockIsOnUserList = false;
         String stockName = stockRequest.stockName();
-        Double stockAmount = stockRequest.stockAmount();
+        double stockAmount = stockRequest.stockAmount();
         Results response = brapiService.getStockById(stockName, TOKEN).results().getFirst();
         Stock newStock = new Stock();
         newStock.setStockAmount(stockAmount);
