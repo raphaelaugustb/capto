@@ -59,7 +59,7 @@ public class CryptoService {
         }
     }
 
-    public Crypto verificateCrypto(long cryptoId) {
+    public Crypto verifyCrypto(long cryptoId) {
         Crypto crypto = cryptoRepository.findById(cryptoId).orElse(null);
         if (crypto != null) {
             return crypto;
@@ -136,7 +136,7 @@ public class CryptoService {
                 break;
             }
         }
-        Crypto cryptoDelete = verificateCrypto(cryptoId);
+        Crypto cryptoDelete = verifyCrypto(cryptoId);
         cryptoRepository.delete(cryptoDelete);
     }
 
@@ -155,7 +155,7 @@ public class CryptoService {
                 break;
             }
         }
-        Crypto crypto = verificateCrypto(cryptoId);
+        Crypto crypto = verifyCrypto(cryptoId);
 
         crypto.setCryptoAmount(cryptoAmount);
 
