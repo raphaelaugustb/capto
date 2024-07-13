@@ -38,7 +38,7 @@ public class CryptoService {
             cryptoPnl = (cryptoApiPrice - cryptoUserValue)/100;
         } else {
             throw new CryptoNotFoundException(cryptoNotFoundError);
-        };
+        }
         return cryptoPnl;
     }
 
@@ -57,7 +57,7 @@ public class CryptoService {
         }
     }
     public Crypto verificateCrypto(long cryptoId) {
-        Crypto crypto = cryptoRepository.findById(cryptoId).get();
+        Crypto crypto = cryptoRepository.findById(cryptoId).orElse(null);
         if (crypto != null) {
             return crypto;
         } else {
@@ -180,9 +180,9 @@ public class CryptoService {
         }
 
         if (userCrypto == null) {
-            userCrypto.setUserPnlValueCrypto(updateUserCryptoPnl(userVerified, cryptoName));
             throw new CryptoNotFoundException(cryptoNotFoundError);
         } else {
+            userCrypto.setUserPnlValueCrypto(updateUserCryptoPnl(userVerified, cryptoName));
             return userCrypto;
         }
     }
