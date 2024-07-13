@@ -28,8 +28,8 @@ public class StockService {
     public StockService(BrapiService brapiService, StockRepository stockRepository, UserRepository userRepository, UserService userService) {
         this.brapiService = brapiService;
         this.stockRepository = stockRepository;
-        this.userRepository = userRepository;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     public double updateUserStockPnl(User user, String stockSymbol){
