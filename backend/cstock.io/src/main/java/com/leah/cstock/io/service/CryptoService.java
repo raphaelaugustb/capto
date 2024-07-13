@@ -21,7 +21,7 @@ public class CryptoService {
     private final CryptoRepository cryptoRepository;
     private final UserService userService;
     private final CoinCapService coinCapService;
-    private static final String  cryptoNotFoundError = "Crypto not found";
+    private static final String cryptoNotFoundError = "Crypto not found";
 
     public CryptoService(CoinCapService coinCapService, UserService userService, CryptoRepository cryptoRepository, UserRepository userRepository) {
         this.coinCapService = coinCapService;
@@ -29,13 +29,14 @@ public class CryptoService {
         this.cryptoRepository = cryptoRepository;
         this.userRepository = userRepository;
     }
-    public double updateUserCryptoPnl(User user, String cryptoName){
+
+    public double updateUserCryptoPnl(User user, String cryptoName) {
         double cryptoPnl = 0;
         double cryptoApiPrice = Double.parseDouble(coinCapService.getCrypto(cryptoName.toLowerCase()).data().priceUsd());
-            Crypto cryptoFind = user.getCryptoList().stream().filter(crypto -> crypto.getCryptoName().equalsIgnoreCase(cryptoName)).findFirst().orElse(null);
+        Crypto cryptoFind = user.getCryptoList().stream().filter(crypto -> crypto.getCryptoName().equalsIgnoreCase(cryptoName)).findFirst().orElse(null);
         if (cryptoFind != null) {
             double cryptoUserValue = Double.parseDouble(cryptoFind.getCryptoPrice());
-            cryptoPnl = (cryptoApiPrice - cryptoUserValue)/100;
+            cryptoPnl = (cryptoApiPrice - cryptoUserValue) / 100;
         } else {
             throw new CryptoNotFoundException(cryptoNotFoundError);
         }
@@ -49,13 +50,15 @@ public class CryptoService {
     public CryptoResponse getCryptoByName(String cryptoId) {
         return coinCapService.getCrypto(cryptoId);
     }
+
     private CryptoRequest verifyCryptoRequest(CryptoRequest cryptoRequest) {
-        if (cryptoRequest != null){
+        if (cryptoRequest != null) {
             return cryptoRequest;
         } else {
             throw new InvalidCryptoRequest("Invalid Crypto Request");
         }
     }
+
     public Crypto verificateCrypto(long cryptoId) {
         Crypto crypto = cryptoRepository.findById(cryptoId).orElse(null);
         if (crypto != null) {

@@ -87,12 +87,8 @@ public class UserService {
         String username = verifiedRequest.username();
         String password = verifiedRequest.password();
         String email = verifiedRequest.email();
-        vericatedUser.setEmail(
-                email
-        );
-        vericatedUser.setPassword(
-                password
-        );
+        vericatedUser.setEmail(email);
+        vericatedUser.setPassword(password);
         vericatedUser.setUsername(username);
         userRepository.save(vericatedUser);
     }

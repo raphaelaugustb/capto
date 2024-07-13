@@ -32,25 +32,28 @@ public class StockService {
         this.userService = userService;
         this.userRepository = userRepository;
     }
-    private StockRequest verifyStockRequest(StockRequest stockRequest){
-        if(stockRequest != null){
+
+    private StockRequest verifyStockRequest(StockRequest stockRequest) {
+        if (stockRequest != null) {
             return stockRequest;
-        } else{
+        } else {
             throw new InvalidStockRequest("Invalid Stock Request");
         }
     }
-    public double updateUserStockPnl(User user, String stockSymbol){
+
+    public double updateUserStockPnl(User user, String stockSymbol) {
         double userStockPnl;
         Stock stockUser = user.getStockList().stream().filter(stock -> stock.getStockSymbol().equalsIgnoreCase(stockSymbol)).findFirst().orElse(null);
         Results stockService = getStock(stockSymbol).results().stream().findFirst().orElse(null);
-        if(stockUser != null && stockService != null){
+        if (stockUser != null && stockService != null) {
             double userStockValue = Double.parseDouble(stockUser.getStockPrice());
-            userStockPnl = (stockService.regularMarketPrice() - userStockValue)/100;
+            userStockPnl = (stockService.regularMarketPrice() - userStockValue) / 100;
         } else {
             throw new StockNotFoundException(stockNotFoundError);
         }
         return userStockPnl;
     }
+
     public StockResponse getStock(String stockSymbol) {
         return brapiService.getStockById(stockSymbol, TOKEN);
     }
