@@ -31,6 +31,7 @@ public class StockService {
         this.userRepository = userRepository;
         this.userService = userService;
     }
+
     public double updateUserStockPnl(User user, String stockSymbol){
         double userStockPnl;
         Stock stockUser = user.getStockList().stream().filter(stock -> stock.getStockSymbol().equalsIgnoreCase(stockSymbol)).findFirst().orElse(null);
@@ -60,7 +61,6 @@ public class StockService {
     }
 
     public Stock getStockOnUserList(UUID userId, String stockName) {
-        //Fix bugs to delete next Stock on list
         Stock stockSelected = null;
         User userVerified = userService.verifyUser(userId);
         for (Stock a : userVerified.getStockList()) {
@@ -141,13 +141,13 @@ public class StockService {
         }
 
         if (stockIsOnUserList) {
-            for (Stock a : userVerified.getStockList()) {
-                if (a.getStockSymbol().equals(stockRequest.stockName())) {
-                    a.setStockAmount(stockAmount);
-                    a.setStockPrice(String.valueOf(response.regularMarketPrice()));
-                    a.setTotalUserStockValue(calcStockUserValue(stockAmount, response.regularMarketPrice()));
+            for (Stock stock : userVerified.getStockList()) {
+                if (stock.getStockSymbol().equals(stockRequest.stockName())) {
+                    stock.setStockAmount(stockAmount);
+                    stock.setStockPrice(String.valueOf(response.regularMarketPrice()));
+                    stock.setTotalUserStockValue(calcStockUserValue(stockAmount, response.regularMarketPrice()));
                     userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
-                    stockRepository.save(a);
+                    stockRepository.save(stock);
                     userRepository.save(userVerified);
                     break;
                 }
