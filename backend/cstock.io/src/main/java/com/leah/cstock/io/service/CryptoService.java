@@ -6,6 +6,7 @@ import com.leah.cstock.io.dto.response.Crypto.Data;
 import com.leah.cstock.io.entity.Crypto;
 import com.leah.cstock.io.entity.User;
 import com.leah.cstock.io.exceptions.crypto.CryptoNotFoundException;
+import com.leah.cstock.io.exceptions.crypto.InvalidCryptoRequest;
 import com.leah.cstock.io.repository.CryptoRepository;
 import com.leah.cstock.io.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,13 @@ public class CryptoService {
     public CryptoResponse getCryptoByName(String cryptoId) {
         return coinCapService.getCrypto(cryptoId);
     }
-
+    private CryptoRequest verifyCryptoRequest(CryptoRequest cryptoRequest) {
+        if (cryptoRequest != null){
+            return cryptoRequest;
+        } else {
+            throw new InvalidCryptoRequest("Invalid Crypto Request");
+        }
+    }
     public Crypto verificateCrypto(long cryptoId) {
         Crypto crypto = cryptoRepository.findById(cryptoId).get();
         if (crypto != null) {
@@ -59,13 +66,15 @@ public class CryptoService {
     }
 
     public void createNewCrypto(CryptoRequest cryptoRequest, UUID userId) {
-
-        // Pegando as informaçoes da nossa request e da api externa
-        String cryptoName = cryptoRequest.cryptoName().toLowerCase();
-        double cryptoAmount = cryptoRequest.cryptoAmount();
-        Data response = coinCapService.getCrypto(cryptoName).data();
-        // Pegando nosso usuário da base de dados
+        // Pegando nosso usuário da base de dados e verificando
         User userVerified = userService.verifyUser(userId);
+        // Verificando a req
+        CryptoRequest verifiedRequest = verifyCryptoRequest(cryptoRequest);
+        // Pegando as informaçoes da nossa request e da api externa
+        String cryptoName = verifiedRequest.cryptoName().toLowerCase();
+        double cryptoAmount = verifiedRequest.cryptoAmount();
+        Data response = coinCapService.getCrypto(cryptoName).data();
+
 
         // Criando a entity crypto e setando os campos
         Crypto crypto = new Crypto();

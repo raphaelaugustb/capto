@@ -5,6 +5,7 @@ import com.leah.cstock.io.dto.response.Stock.Results;
 import com.leah.cstock.io.dto.response.Stock.StockResponse;
 import com.leah.cstock.io.entity.Stock;
 import com.leah.cstock.io.entity.User;
+import com.leah.cstock.io.exceptions.Stock.InvalidStockRequest;
 import com.leah.cstock.io.exceptions.Stock.StockNotFoundException;
 import com.leah.cstock.io.repository.StockRepository;
 import com.leah.cstock.io.repository.UserRepository;
@@ -31,7 +32,13 @@ public class StockService {
         this.userService = userService;
         this.userRepository = userRepository;
     }
-
+    private StockRequest verifyStockRequest(StockRequest stockRequest){
+        if(stockRequest != null){
+            return stockRequest;
+        } else{
+            throw new InvalidStockRequest("Invalid Stock Request");
+        }
+    }
     public double updateUserStockPnl(User user, String stockSymbol){
         double userStockPnl;
         Stock stockUser = user.getStockList().stream().filter(stock -> stock.getStockSymbol().equalsIgnoreCase(stockSymbol)).findFirst().orElse(null);
@@ -78,8 +85,9 @@ public class StockService {
     }
 
     public void updateStockOnUserList(UUID userId, StockRequest stockRequest) {
-        String stockName = stockRequest.stockName();
-        double stockAmount = stockRequest.stockAmount();
+        StockRequest requestVerified = verifyStockRequest(stockRequest);
+        String stockName = requestVerified.stockName();
+        double stockAmount = requestVerified.stockAmount();
         double newRegularMarketPrice = getStock(stockName).results().getFirst().regularMarketPrice();
         User userVerified = userService.verifyUser(userId);
         Stock stockUpdated = null;
@@ -122,10 +130,11 @@ public class StockService {
     }
 
     public void createNewStockUser(StockRequest stockRequest, UUID userId) {
+        StockRequest verifiedStockRequest = verifyStockRequest(stockRequest);
         User userVerified = userService.verifyUser(userId);
         boolean stockIsOnUserList = false;
-        String stockName = stockRequest.stockName();
-        double stockAmount = stockRequest.stockAmount();
+        String stockName = verifiedStockRequest.stockName();
+        double stockAmount = verifiedStockRequest.stockAmount();
         Results response = brapiService.getStockById(stockName, TOKEN).results().getFirst();
         Stock newStock = new Stock();
         newStock.setStockAmount(stockAmount);
@@ -142,7 +151,7 @@ public class StockService {
 
         if (stockIsOnUserList) {
             for (Stock stock : userVerified.getStockList()) {
-                if (stock.getStockSymbol().equals(stockRequest.stockName())) {
+                if (stock.getStockSymbol().equals(stockName)) {
                     stock.setStockAmount(stockAmount);
                     stock.setStockPrice(String.valueOf(response.regularMarketPrice()));
                     stock.setTotalUserStockValue(calcStockUserValue(stockAmount, response.regularMarketPrice()));

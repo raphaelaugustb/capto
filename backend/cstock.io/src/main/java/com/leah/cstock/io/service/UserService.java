@@ -39,7 +39,7 @@ public class UserService {
         return userBalance;
     }
 
-    public UserRequest verifyUserRequest(UserRequest userRequest) {
+    private UserRequest verifyUserRequest(UserRequest userRequest) {
         if (userRequest != null) {
             return userRequest;
         } else {
@@ -59,10 +59,10 @@ public class UserService {
     }
 
     public void createNewUser(UserRequest userRequest) {
-        UserRequest requestVerificated = verifyUserRequest(userRequest);
-        String username = requestVerificated.username();
-        String password = requestVerificated.password();
-        String email = requestVerificated.email();
+        UserRequest verifiedRequest = verifyUserRequest(userRequest);
+        String username = verifiedRequest.username();
+        String password = verifiedRequest.password();
+        String email = verifiedRequest.email();
         User verifyUserExist = userRepository.findByEmail(email);
         if (verifyUserExist == null) {
             User newUser = new User();
@@ -82,11 +82,11 @@ public class UserService {
     }
 
     public void updateUserInfo(UUID userId, UserRequest userRequest) {
-        UserRequest requestVerificated = verifyUserRequest(userRequest);
+        UserRequest verifiedRequest = verifyUserRequest(userRequest);
         User vericatedUser = verifyUser(userId);
-        String username = requestVerificated.username();
-        String password = requestVerificated.password();
-        String email = requestVerificated.email();
+        String username = verifiedRequest.username();
+        String password = verifiedRequest.password();
+        String email = verifiedRequest.email();
         vericatedUser.setEmail(
                 email
         );
