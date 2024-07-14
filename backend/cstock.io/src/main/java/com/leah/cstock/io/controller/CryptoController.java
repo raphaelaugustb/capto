@@ -25,26 +25,26 @@ public class CryptoController {
     }
     @GetMapping("{userId}/crypto/list")
     public ResponseEntity<List<Crypto>> getUserCryptoList(@PathVariable UUID userId) {
-        return ResponseEntity.ok(cryptoService.getUserCryptoList(userId));
+        return ResponseEntity.status(HttpStatus.FOUND).body(cryptoService.getUserCryptoList(userId));
     }
     @GetMapping("{userId}/crypto")
     public ResponseEntity<Crypto> getUserCryptoOnWallet(@PathVariable UUID userId, @RequestParam(name = "name") String cryptoName) {
-        return ResponseEntity.ok(cryptoService.getUserCryptoByName(userId, cryptoName));
+        return ResponseEntity.status(HttpStatus.FOUND).body(cryptoService.getUserCryptoByName(userId, cryptoName));
     }
     @PostMapping("{userId}/crypto")
     public ResponseEntity<CryptoRequest> addUserCryptoOnWallet(@PathVariable UUID userId, @RequestBody CryptoRequest cryptoRequest) {
         cryptoService.createNewCrypto(cryptoRequest, userId);
-        return  ResponseEntity.ok(cryptoRequest);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(cryptoRequest);
     }
     @PutMapping("{userId}/crypto")
     public ResponseEntity<Double> updateUserCryptoOnWallet(@PathVariable UUID userId, @RequestParam(name = "name") String cryptoName, @RequestBody double cryptoAmount){
         cryptoService.updateCrypto(userId, cryptoAmount, cryptoName);
-        return ResponseEntity.ok(cryptoAmount);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(cryptoAmount);
     }
     @DeleteMapping("{userId}/crypto")
     public ResponseEntity<String> deleteUserCryptoOnWallet(@PathVariable UUID userId, @RequestParam(name = "name") String cryptoName){
         cryptoService.deleteCryptoById(userId, cryptoName);
-        return ResponseEntity.ok("Deleted user crypto:" + cryptoName);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("Deleted user crypto:" + cryptoName);
     }
 
 }
