@@ -2,10 +2,7 @@ package com.leah.cstock.io.controller;
 
 
 import com.leah.cstock.io.dto.request.UserRequest;
-import com.leah.cstock.io.dto.response.Crypto.CryptoResponse;
 import com.leah.cstock.io.dto.response.UserResponse;
-import com.leah.cstock.io.service.CoinCapService;
-import com.leah.cstock.io.service.CryptoService;
 import com.leah.cstock.io.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/user/register")
+    @PostMapping("/register")
     public ResponseEntity<UserRequest> registerUser(@RequestBody UserRequest userRequest) {
         userService.createNewUser(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(userRequest);
