@@ -32,15 +32,7 @@ Start app on localhost:8080
  ```bash
     mvn spring-boot:run 
 ```
-    
-#### API Documentation
-
-You can get endpoints by downloading JSON on documents or using swagger by acessing http://localhost:8080/swagger-ui/index.html after running project
-
-Supported by Bruno and Postman
-
-
 ### Documents
-
+[API Endpoints](https://github.com/raphaelaugustb/cstock.io/tree/main/documents/api)
 [Documents](https://github.com/raphaelaugustb/cstock.io/tree/main/documents)
 
