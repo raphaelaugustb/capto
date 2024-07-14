@@ -35,7 +35,7 @@ Start app on localhost:8080
     
 ### API Documentation
 
-You can acess all of it methods downloading JSON endpoints on documents or using swagger by acessing http://localhost:8080/swagger-ui/index.html after running project
+You can get endpoints by downloading JSON on documents or using swagger by acessing http://localhost:8080/swagger-ui/index.html after running project
 
 Supported by Bruno and Postman
 
