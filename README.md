@@ -2,7 +2,7 @@
 <img src="documents/logo.png" width="80"/>
 
 
-## Cstock - Administrate your finances on a simple way
+## Capto - Administrate your finances on a simple way
 
 ### Install project
 
