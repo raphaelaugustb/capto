@@ -15,10 +15,14 @@ Entering on project directory
   ```bash
     cd cstock.io
 ```
-### Init back-end
+### Test back-end
   Go to API directory and run mvn dependecies install
   ```bash
     cd backend/cstock.io && mvn clean install package 
+```
+Capto uses external api services you need to pass TOKEN on .env or on request params as token
+  ```bash
+   token=2U8gKfDMn6uaquVGTNYBwd
 ```
 Start MySql database
   ```bash
