@@ -6,7 +6,7 @@
 
 
 
-#### Install project
+#### Setup project
  Clone project 
 ```bash
     git clone https://github.com/raphaelaugustb/cstock.io/
@@ -15,7 +15,7 @@ Entering on project directory
   ```bash
     cd cstock.io
 ```
-#### Test back-end
+#### Setup back-end
   Go to API directory and run mvn dependecies install
   ```bash
     cd backend/cstock.io && mvn clean install package 
