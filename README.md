@@ -24,7 +24,7 @@ Capto uses external api services you need to pass TOKEN on .env or on request pa
   ```bash
    token=2U8gKfDMn6uaquVGTNYBwd
 ```
-Start MySql database
+Start database on container
   ```bash
     docker compose up
 ```
