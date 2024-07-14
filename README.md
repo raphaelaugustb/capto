@@ -9,16 +9,16 @@
 #### Setup project
  Clone project 
 ```bash
-    git clone https://github.com/raphaelaugustb/cstock.io/
+    git clone https://github.com/raphaelaugustb/capto/
 ```
 Entering on project directory
   ```bash
-    cd cstock.io
+    cd capto
 ```
 #### Setup back-end
   Go to directory and run dependencies
   ```bash
-    cd backend/cstock.io && mvn clean install package 
+    cd backend/capto && mvn clean install package 
 ```
 Start database on container
   ```bash
@@ -33,7 +33,7 @@ Capto uses external api services you need to pass TOKEN on .env or on request pa
    token=2U8gKfDMn6uaquVGTNYBwd
 ```
 ### Documents
-[API Endpoints](https://github.com/raphaelaugustb/cstock.io/tree/main/documents/api)
+[API Endpoints](https://github.com/raphaelaugustb/capto/tree/main/documents/api)
 
-[Documents](https://github.com/raphaelaugustb/cstock.io/tree/main/documents)
+[Documents](https://github.com/raphaelaugustb/capto/tree/main/documents)
 
