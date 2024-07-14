@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @RestController
 public class UserController {
-
+    //Implement JWT and OAUTH
     private UserService userService;
 
     public UserController(UserService userService) {

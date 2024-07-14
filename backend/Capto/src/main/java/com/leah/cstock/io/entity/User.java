@@ -15,6 +15,7 @@ import java.util.UUID;
 @Getter
 @Entity
 public class User {
+    // Implement user roles
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID userID;

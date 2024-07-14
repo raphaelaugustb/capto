@@ -1,6 +1,5 @@
 package com.leah.cstock.io.entity;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,4 +22,5 @@ public class Stock {
     private double totalUserStockValue;
     private String stockSymbol;
     private double userPnlValueStock;
+
 }

@@ -38,6 +38,7 @@ public class UserService {
         userBalance = cryptoBalance + stockBalance;
         return userBalance;
     }
+    //Implement Function to find user by name and password
 
     private UserRequest verifyUserRequest(UserRequest userRequest) {
         if (userRequest != null) {
@@ -83,14 +84,14 @@ public class UserService {
 
     public void updateUserInfo(UUID userId, UserRequest userRequest) {
         UserRequest verifiedRequest = verifyUserRequest(userRequest);
-        User vericatedUser = verifyUser(userId);
+        User verifiedUser = verifyUser(userId);
         String username = verifiedRequest.username();
         String password = verifiedRequest.password();
         String email = verifiedRequest.email();
-        vericatedUser.setEmail(email);
-        vericatedUser.setPassword(password);
-        vericatedUser.setUsername(username);
-        userRepository.save(vericatedUser);
+        verifiedUser.setEmail(email);
+        verifiedUser.setPassword(password);
+        verifiedUser.setUsername(username);
+        userRepository.save(verifiedUser);
     }
 
     public void deleteUserById(UUID userId) {

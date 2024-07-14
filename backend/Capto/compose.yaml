@@ -2,7 +2,7 @@ services:
   mysql:
     image: 'mysql:latest'
     environment:
-      - 'MYSQL_DATABASE=cstock.io'
+      - 'MYSQL_DATABASE=capto'
       - 'MYSQL_PASSWORD=12345'
       - 'MYSQL_ROOT_PASSWORD=123456'
       - 'MYSQL_USER=admin'
