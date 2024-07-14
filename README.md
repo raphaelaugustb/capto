@@ -1,4 +1,6 @@
-![image](https://github.com/user-attachments/assets/4ace0dc6-7863-436d-b56e-2e06148e87ed)
+<br />
+<img src="documents/logo.png" width="80"/>
+
 
 ## Cstock - Administrate your finances on a simple way
 
