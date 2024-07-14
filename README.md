@@ -1,4 +1,5 @@
-![image](https://github.com/user-attachments/assets/89a39556-a44d-4ccd-ad1a-fd122e70a62f)
+![image](https://github.com/user-attachments/assets/12097a60-088a-47f5-adf4-ae6df0508fe5)
+
 
 
 Here you can store and administrate your finances on a simple way. You can test it by yourself following this steps
