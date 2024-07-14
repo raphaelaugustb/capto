@@ -6,7 +6,7 @@
 
 
 
-### Install project
+#### Install project
  Clone project 
 ```bash
     git clone https://github.com/raphaelaugustb/cstock.io/
@@ -15,7 +15,7 @@ Entering on project directory
   ```bash
     cd cstock.io
 ```
-### Test back-end
+#### Test back-end
   Go to API directory and run mvn dependecies install
   ```bash
     cd backend/cstock.io && mvn clean install package 
@@ -33,7 +33,7 @@ Start app on localhost:8080
     mvn spring-boot:run 
 ```
     
-### API Documentation
+#### API Documentation
 
 You can get endpoints by downloading JSON on documents or using swagger by acessing http://localhost:8080/swagger-ui/index.html after running project
 
