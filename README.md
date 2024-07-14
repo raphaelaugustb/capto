@@ -2,7 +2,7 @@
 <img src="documents/images/capto-logo.png" width="80"/>
 
 
-## Capto - Administrate your finances on a simple way
+### Capto - Administrate your finances on a simple way
 
 
 
