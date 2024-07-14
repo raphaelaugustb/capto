@@ -16,7 +16,7 @@ Entering on project directory
     cd cstock.io
 ```
 #### Setup back-end
-  Go to API directory and run mvn dependecies install
+  Go to directory and run dependencies
   ```bash
     cd backend/cstock.io && mvn clean install package 
 ```
@@ -24,7 +24,7 @@ Start database on container
   ```bash
     docker compose up
 ```
-Start app on localhost:8080
+Start back-end on localhost:8080
  ```bash
     mvn spring-boot:run 
 ```
