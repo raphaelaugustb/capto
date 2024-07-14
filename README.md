@@ -1,13 +1,8 @@
-![image](https://github.com/user-attachments/assets/0cd16aa2-48c7-43a1-9c21-02ecec901a11)
+![image](https://github.com/user-attachments/assets/4ace0dc6-7863-436d-b56e-2e06148e87ed)
 
+## Cstock - Store and administrate your finances on a simple way
 
-
-Here you can store and administrate your finances on a simple way. You can test it by yourself following this steps
-
-
-
-
-## Install project
+### Install project
 
 
  Clone project 
@@ -18,7 +13,7 @@ Entering on project directory
   ```bash
     cd cstock.io
 ```
-## Init back-end
+### Init back-end
   Go to API directory and run mvn dependecies install
   ```bash
     cd backend/cstock.io && mvn clean install package 
@@ -32,14 +27,14 @@ Start app on localhost:8080
     mvn spring-boot:run 
 ```
     
-## API Documentation
+### API Documentation
 
 You can acess all of it methods downloading JSON endpoints on documents or using swagger by acessing http://localhost:8080/swagger-ui/index.html after running project
 
 Supported by Bruno and Postman
 
 
-## Documents
+### Documents
 
 [Documents](https://github.com/raphaelaugustb/cstock.io/tree/main/documents)
 
