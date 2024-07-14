@@ -34,5 +34,6 @@ Start app on localhost:8080
 ```
 ### Documents
 [API Endpoints](https://github.com/raphaelaugustb/cstock.io/tree/main/documents/api)
+
 [Documents](https://github.com/raphaelaugustb/cstock.io/tree/main/documents)
 
