@@ -1,0 +1,471 @@
+{
+  "name": "cstock.io",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "CryptoService",
+      "items": [
+        {
+          "type": "http",
+          "name": "addUserCryptoOnWallet",
+          "seq": 4,
+          "request": {
+            "url": "http://localhost:8080/{userId}/crypto",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{ \n  \"cryptoName\": \"solana\",\n  \"cryptoAmount\": 3\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "deleteUserCrypto",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/{userId}/crypto?name=Solana",
+            "method": "DELETE",
+            "headers": [],
+            "params": [
+              {
+                "name": "name",
+                "value": "Solana",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "getCryptoByname",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/crypto?name={cryptoNameOnLowerCase}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "name",
+                "value": "{cryptoNameOnLowerCase}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "getUserCryptoList",
+          "seq": 3,
+          "request": {
+            "url": "http://localhost:8080/{userId}/crypto/list",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "getUserCryptoOnWallet",
+          "seq": 5,
+          "request": {
+            "url": "http://localhost:8080/{userId}/crypto?name={cryptoName}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "name",
+                "value": "{cryptoName}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "updateUserCryptoOnWallet",
+          "seq": 6,
+          "request": {
+            "url": "http://localhost:8080/{userId}/crypto?name={onLowerCase}",
+            "method": "PUT",
+            "headers": [],
+            "params": [
+              {
+                "name": "name",
+                "value": "{onLowerCase}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "json",
+              "json": "2",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "StockService",
+      "items": [
+        {
+          "type": "http",
+          "name": "CreateNewUserStockOnWallet",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/{userId}/stock",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n    \"stockName\": \"VALE3\",\n    \"stockAmount\": 4\n\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "DeleteStockOnUserWallet",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/{userId}/stock?name=VALE3",
+            "method": "DELETE",
+            "headers": [],
+            "params": [
+              {
+                "name": "name",
+                "value": "VALE3",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "GetStockById",
+          "seq": 4,
+          "request": {
+            "url": "http://localhost:8080/stock?name={stockName}",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "name",
+                "value": "{stockName}",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "GetUserStockList",
+          "seq": 5,
+          "request": {
+            "url": "http://localhost:8080/{userId}/stock/list",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "getOneUserStockByName",
+          "seq": 6,
+          "request": {
+            "url": "http://localhost:8080/{userId}/stock?name=PETR4",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "name",
+                "value": "PETR4",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "updateUserStockOnWallet",
+          "seq": 7,
+          "request": {
+            "url": "http://localhost:8080/{userId}/stock",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n    \"stockName\": \"MGLU3\",\n    \"stockAmount\": 6\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "UserService",
+      "items": [
+        {
+          "type": "http",
+          "name": "deleteUser",
+          "seq": 4,
+          "request": {
+            "url": "http://localhost:8080/{userId}/user",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "getUser",
+          "seq": 3,
+          "request": {
+            "url": "http://localhost:8080/{userId}/user",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "newUser",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/user/register",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n    \"username\": \"raphael\",\n    \"password\":\"raphael123\",\n    \"email\": \"devtravassosraphael12@gmail.com\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "updateUser",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/{userId}/user",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "    {\n    \"username\": \"raphael augusto\",\n    \"password\":\"Augusto1234\",\n    \"email\": \"devtravassosraphael12@gmail.com\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "environments": [],
+  "root": {
+    "request": {
+      "auth": {
+        "mode": "none"
+      },
+      "headers": [],
+      "script": {},
+      "vars": {},
+      "tests": ""
+    },
+    "meta": {
+      "name": "cstock.io"
+    }
+  },
+  "brunoConfig": {
+    "version": "1",
+    "name": "cstock.io",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ]
+  }
+}
