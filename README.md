@@ -1,6 +1,6 @@
 ![image](https://github.com/user-attachments/assets/4ace0dc6-7863-436d-b56e-2e06148e87ed)
 
-## cstock - Store and administrate your finances on a simple way
+## Cstock - Store and administrate your finances on a simple way
 
 ### Install project
 
