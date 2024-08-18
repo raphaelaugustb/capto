@@ -41,40 +41,30 @@ public class UserService {
     //Implement Function to find user by name and password
 
     private UserRequest verifyUserRequest(UserRequest userRequest) {
-        if (userRequest != null) {
-            return userRequest;
-        } else {
-            throw new InvalidUserRequest("Invalid fields");
-        }
+        if (userRequest.email() == null || userRequest.password() == null || userRequest.username() == null)
+            throw new InvalidUserRequest("Invalid user request");
+        return userRequest;
 
     }
 
     public User verifyUser(UUID userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user != null) {
-            return user;
-        } else {
-            throw new UserNotFoundException("User not found");
-        }
-
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
-    public void createNewUser(UserRequest userRequest) {
+    public UserResponse createNewUser(UserRequest userRequest) {
         UserRequest verifiedRequest = verifyUserRequest(userRequest);
         String username = verifiedRequest.username();
         String password = verifiedRequest.password();
         String email = verifiedRequest.email();
         User verifyUserExist = userRepository.findByEmail(email);
-        if (verifyUserExist == null) {
-            User newUser = new User();
-            newUser.setUsername(username);
-            newUser.setPassword(password);
-            newUser.setEmail(email);
-            userRepository.save(newUser);
-        } else {
+        if (verifyUserExist != null)
             throw new UserAlreadyExistException("User already exists");
-        }
-
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        userRepository.save(user);
+        return new UserResponse(username, password, email, user.getUserBalance());
     }
 
     public UserResponse getUserInfo(UUID userId) {

@@ -34,11 +34,9 @@ public class StockService {
     }
 
     private StockRequest verifyStockRequest(StockRequest stockRequest) {
-        if (stockRequest != null) {
-            return stockRequest;
-        } else {
+        if (stockRequest.stockAmount() == 0 || stockRequest.stockName() == null)
             throw new InvalidStockRequest("Invalid Stock Request");
-        }
+        return stockRequest;
     }
 
     public double updateUserStockPnl(User user, String stockSymbol) {
@@ -79,12 +77,11 @@ public class StockService {
                 break;
             }
         }
-        if (stockSelected != null) {
-            stockSelected.setUserPnlValueStock(updateUserStockPnl(userVerified, stockSelected.getStockSymbol()));
-            return stockSelected;
-        } else {
+        if (stockSelected == null)
             throw new StockNotFoundException(stockNotFoundError);
-        }
+        stockSelected.setUserPnlValueStock(updateUserStockPnl(userVerified, stockSelected.getStockSymbol()));
+        return stockSelected;
+
     }
 
     public void updateStockOnUserList(UUID userId, StockRequest stockRequest) {
@@ -99,17 +96,15 @@ public class StockService {
                 stockUpdated = a;
             }
         }
-        if (stockUpdated != null) {
-            stockUpdated.setStockAmount(stockAmount);
-            stockUpdated.setStockPrice(String.valueOf(newRegularMarketPrice));
-            stockUpdated.setTotalUserStockValue(calcStockUserValue(stockAmount, newRegularMarketPrice));
-            userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
-            stockRepository.save(stockUpdated);
-            userRepository.save(userVerified);
-
-        } else {
+        if (stockUpdated == null)
             throw new StockNotFoundException(stockNotFoundError);
-        }
+        stockUpdated.setStockAmount(stockAmount);
+        stockUpdated.setStockPrice(String.valueOf(newRegularMarketPrice));
+        stockUpdated.setTotalUserStockValue(calcStockUserValue(stockAmount, newRegularMarketPrice));
+        userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
+        stockRepository.save(stockUpdated);
+        userRepository.save(userVerified);
+
 
     }
 
@@ -122,14 +117,14 @@ public class StockService {
                 break;
             }
         }
-        if (stockRemoved != null) {
-            userVerified.getStockList().remove(stockRemoved);
-            userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
-            userRepository.save(userVerified);
-            stockRepository.deleteById(stockRemoved.getIdStock());
-        } else {
+        if (stockRemoved == null)
             throw new StockNotFoundException(stockNotFoundError);
-        }
+
+        userVerified.getStockList().remove(stockRemoved);
+        userVerified.setUserBalance(userService.updateUserBalance(userVerified.getCryptoList(), userVerified.getStockList()));
+        userRepository.save(userVerified);
+        stockRepository.deleteById(stockRemoved.getIdStock());
+
     }
 
     public void createNewStockUser(StockRequest stockRequest, UUID userId) {
