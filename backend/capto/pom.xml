@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.leah</groupId>
-	<artifactId>Capto</artifactId>
+	<artifactId>capto</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Capto</name>
+	<name>capto</name>
 	<description>Administrate your finances on a simple way</description>
 	<url/>
 	<licenses>
