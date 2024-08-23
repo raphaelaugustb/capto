@@ -6,34 +6,34 @@
 
 
 
-#### Install project
+#### Setup project
  Clone project 
 ```bash
-    git clone https://github.com/raphaelaugustb/cstock.io/
+    git clone https://github.com/raphaelaugustb/capto/
 ```
 Entering on project directory
   ```bash
-    cd cstock.io
+    cd capto
 ```
-#### Test back-end
-  Go to API directory and run mvn dependecies install
+#### Setup back-end
+  Go to directory and run dependencies
   ```bash
-    cd backend/cstock.io && mvn clean install package 
-```
-Capto uses external api services you need to pass TOKEN on .env or on request params as token
-  ```bash
-   token=2U8gKfDMn6uaquVGTNYBwd
+    cd backend/capto && mvn clean install package 
 ```
 Start database on container
   ```bash
     docker compose up
 ```
-Start app on localhost:8080
+Start back-end on localhost:8080
  ```bash
     mvn spring-boot:run 
 ```
+Capto uses external api services you need to pass TOKEN on .env or on request params as token
+  ```bash
+   token=2U8gKfDMn6uaquVGTNYBwd
+```
 ### Documents
-[API Endpoints](https://github.com/raphaelaugustb/cstock.io/tree/main/documents/api)
+[API Endpoints](https://github.com/raphaelaugustb/capto/tree/main/documents/api)
 
-[Documents](https://github.com/raphaelaugustb/cstock.io/tree/main/documents)
+[Documents](https://github.com/raphaelaugustb/capto/tree/main/documents)
 
